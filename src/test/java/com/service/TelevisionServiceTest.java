@@ -93,7 +93,7 @@ class TelevisionServiceTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.findById(anyString()));
         Mockito.verify(repository).findById(anyString());
     }
-    
+
 
     @Test
     void delete() {
