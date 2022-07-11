@@ -10,14 +10,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.internal.matchers.Any;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 class ComputerServiceTest {
     private ComputerService target;
@@ -68,6 +71,12 @@ class ComputerServiceTest {
         target.getAll();
         Mockito.verify(repository).getAll();
     }
+    @Test
+    void getAll_byCallRealMethod() {
+        when(target.getAll()).thenCallRealMethod();
+        Assertions.assertThrows(NullPointerException.class, () -> target.getAll());
+        Mockito.verify(repository).getAll();
+    }
 
     @Test
     void saveComputer() {
@@ -101,6 +110,21 @@ class ComputerServiceTest {
         Mockito.verify(repository).findById(anyString());
     }
 
+    @Test
+    public void findById_byArgumentMatchers() {
+        final Computer computer = new Computer("Title", 2, 199, "X560", ManufacturerComputer.APPLE);
+        when(repository.findById(ArgumentMatchers.argThat(id -> {
+            assertEquals("2532153", id);
+            return true;
+        }))).thenReturn(Optional.of(computer));
+
+        Optional<Computer> actualComputer = target.findById("2532153");
+        Mockito.verify(repository).findById(anyString());
+        if (actualComputer.isEmpty()) {
+            return;
+        }
+        Assertions.assertEquals(computer.getId(), actualComputer.get().getId());
+    }
     @Test
     void delete() {
         Computer computer1 = new Computer("Title", 1, 199, "MODEL 3310", ManufacturerComputer.ASUS);

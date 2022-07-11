@@ -1,6 +1,8 @@
 package com.service;
 
 
+import com.model.computer.Computer;
+import com.model.computer.ManufacturerComputer;
 import com.model.television.ManufacturerTelevision;
 import com.model.television.Television;
 import com.repository.television.TelevisionRepository;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.mockito.internal.invocation.RealMethod;
 
@@ -15,6 +18,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 
 class TelevisionServiceTest {
     private TelevisionService target;
@@ -64,6 +68,12 @@ class TelevisionServiceTest {
         Mockito.verify(repository).getAll();
     }
     @Test
+    void getAll_byCallRealMethod() {
+        when(target.getAll()).thenCallRealMethod();
+        Assertions.assertThrows(NullPointerException.class, () -> target.getAll());
+        Mockito.verify(repository).getAll();
+    }
+    @Test
     void saveTelevision() {
         final Television television = new Television("Title", 25, 199, "MODEL FHD", ManufacturerTelevision.LG, 65);
         target.saveTelevision(television);
@@ -94,7 +104,21 @@ class TelevisionServiceTest {
         Mockito.verify(repository).findById(anyString());
     }
 
+    @Test
+    public void findById_byArgumentMatchers() {
+        final Television television = new Television("Title", 2, 199, "X560", ManufacturerTelevision.SONY, 123);
+        Mockito.when(repository.findById(ArgumentMatchers.argThat(id -> {
+            Assertions.assertEquals("2532153", id);
+            return true;
+        }))).thenReturn(Optional.of(television));
 
+        Optional<Television> actualTelevision = target.findById("2532153");
+        Mockito.verify(repository).findById(anyString());
+        if (actualTelevision.isEmpty()){
+            return;
+        }
+        Assertions.assertEquals(television.getId(), actualTelevision.get().getId());
+    }
     @Test
     void delete() {
         Television television1 = new Television("Title", 1, 199, "MODEL 3310", ManufacturerTelevision.SONY, 35);

@@ -1,21 +1,19 @@
 package com.service;
 
-import com.model.computer.Computer;
-import com.model.computer.ManufacturerComputer;
 import com.model.phone.Manufacturer;
 import com.model.phone.Phone;
 import com.repository.phone.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.MockedConstruction;
-import org.mockito.Mockito;
+import org.mockito.*;
 
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.when;
 
 class PhoneServiceTest {
 
@@ -61,6 +59,12 @@ class PhoneServiceTest {
         target.getAll();
         Mockito.verify(repository).getAll();
     }
+    @Test
+    void getAll_byCallRealMethod() {
+        when(target.getAll()).thenCallRealMethod();
+        Assertions.assertThrows(NullPointerException.class, () -> target.getAll());
+        Mockito.verify(repository).getAll();
+    }
 
     @Test
     void printAll() {
@@ -88,12 +92,29 @@ class PhoneServiceTest {
     @Test
     void findById() {
         final Phone phone = new Phone("Title", 1, 199, "MODEL 3310", Manufacturer.NOKIA);
-        Mockito.when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
         Assertions.assertEquals(repository.findById(phone.getId()), Optional.of(phone));
     }
+
+    @Test
+    public void findById_byArgumentMatchers() {
+        final Phone phone = new Phone("Title", 1, 199, "MODEL 3310", Manufacturer.NOKIA);
+        Mockito.when(repository.findById(ArgumentMatchers.argThat(id -> {
+            Assertions.assertEquals("2532153", id);
+            return true;
+        }))).thenReturn(Optional.of(phone));
+
+        Optional<Phone> actualPhone = target.findById("2532153");
+        Mockito.verify(repository).findById(anyString());
+        if (actualPhone.isEmpty()){
+            return;
+        }
+        Assertions.assertEquals(phone.getId(), actualPhone.get().getId());
+    }
+
     @Test
     void findById_IncorrectId() {
-        Mockito.when(repository.findById(anyString())).thenThrow(IllegalArgumentException.class);
+        when(repository.findById(anyString())).thenThrow(IllegalArgumentException.class);
         Assertions.assertThrows(IllegalArgumentException.class, () -> target.findById(anyString()));
         Mockito.verify(repository).findById(anyString());
     }
