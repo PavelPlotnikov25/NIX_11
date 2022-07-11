@@ -120,9 +120,7 @@ class ComputerServiceTest {
 
         Optional<Computer> actualComputer = target.findById("2532153");
         Mockito.verify(repository).findById(anyString());
-        if (actualComputer.isEmpty()) {
-            return;
-        }
+        Assertions.assertTrue(actualComputer.isPresent());
         Assertions.assertEquals(computer.getId(), actualComputer.get().getId());
     }
     @Test

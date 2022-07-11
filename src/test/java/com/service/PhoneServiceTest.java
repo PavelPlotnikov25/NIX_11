@@ -106,9 +106,7 @@ class PhoneServiceTest {
 
         Optional<Phone> actualPhone = target.findById("2532153");
         Mockito.verify(repository).findById(anyString());
-        if (actualPhone.isEmpty()){
-            return;
-        }
+        Assertions.assertTrue(actualPhone.isPresent());
         Assertions.assertEquals(phone.getId(), actualPhone.get().getId());
     }
 

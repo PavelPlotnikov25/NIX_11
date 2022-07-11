@@ -114,9 +114,7 @@ class TelevisionServiceTest {
 
         Optional<Television> actualTelevision = target.findById("2532153");
         Mockito.verify(repository).findById(anyString());
-        if (actualTelevision.isEmpty()){
-            return;
-        }
+        Assertions.assertTrue(actualTelevision.isPresent());
         Assertions.assertEquals(television.getId(), actualTelevision.get().getId());
     }
     @Test
