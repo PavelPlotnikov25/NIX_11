@@ -15,7 +15,13 @@ public class TelevisionRepository implements CrudRepositoryTelevision {
     public TelevisionRepository() {televisions = new LinkedList<>();}
 
     @Override
-    public void save(Television television) {televisions.add(television);}
+    public void save(Television television) {
+        if (television == null) {
+            throw new IllegalArgumentException("Cannot save a null television");
+        } else {
+            televisions.add(television);
+        }
+    }
 
     @Override
     public void saveAll(List<Television> televisions) {

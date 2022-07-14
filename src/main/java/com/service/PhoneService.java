@@ -13,11 +13,18 @@ import java.util.Random;
 
 public class PhoneService {
     private static final Random RANDOM = new Random();
-    private static final PhoneRepository REPOSITORY = new PhoneRepository();
+    private final PhoneRepository repository;
     private static final Logger logger = LoggerFactory.getLogger(PhoneService.class);
+
+    public PhoneService(PhoneRepository repository) {
+        this.repository = repository;
+    }
 
     public void createAndSavePhones(int count) {
         List<Phone> phones = new LinkedList<>();
+        if (count < 1){
+            throw new IllegalArgumentException("count must be bigger than 0");
+        }
         for (int i = 0; i < count; i++) {
             phones.add(new Phone(
                     "Title-" + RANDOM.nextInt(1000),
@@ -29,7 +36,7 @@ public class PhoneService {
             logger.info("SAVE " + phones);
         }
 
-        REPOSITORY.saveAll(phones);
+        repository.saveAll(phones);
     }
 
     private Manufacturer getRandomManufacturer() {
@@ -39,20 +46,26 @@ public class PhoneService {
     }
 
     public void printAll() {
-        for (Phone phone : REPOSITORY.getAll()) {
+        for (Phone phone : repository.getAll()) {
             System.out.println(phone);
         }
     }
     public void update(Phone phone){
-        REPOSITORY.update(phone);
+        repository.update(phone);
     }
     public List<Phone> getAll(){
-        return REPOSITORY.getAll();
+        return repository.getAll();
     }
-    public Optional<Phone> findById(String id){
-        return REPOSITORY.findById(id);
-    }
+    public Optional<Phone> findById(String id) {
+            return repository.findById(id);
+        }
     public void delete(String id){
-        REPOSITORY.delete(id);
+        repository.delete(id);
+    }
+    public void savePhone(Phone phone){
+        if (phone.getCount() == 0){
+            phone.setCount(-1);
+        }
+        repository.save(phone);
     }
 }

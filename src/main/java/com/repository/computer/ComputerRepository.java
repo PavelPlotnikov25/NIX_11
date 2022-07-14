@@ -16,8 +16,14 @@ public class ComputerRepository implements CrudRepositoryComputer {
 
     @Override
     public void save(Computer computer) {
-        computers.add(computer);
+        if (computer == null) {
+            throw new IllegalArgumentException("Cannot save a null computer");
+        } else {
+            computers.add(computer);
+        }
     }
+
+
 
     @Override
     public void saveAll(List<Computer> computers) {

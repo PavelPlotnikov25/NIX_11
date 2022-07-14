@@ -16,7 +16,11 @@ public class PhoneRepository implements CrudRepositoryPhone {
 
     @Override
     public void save(Phone phone) {
+        if (phone == null){
+            throw new IllegalArgumentException();
+        }else {
         phones.add(phone);
+        }
     }
 
     @Override

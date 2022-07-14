@@ -1,5 +1,6 @@
 package com.service;
 
+import com.model.phone.Phone;
 import com.model.television.ManufacturerTelevision;
 import com.model.television.Television;
 import com.repository.television.TelevisionRepository;
@@ -12,11 +13,18 @@ import org.slf4j.LoggerFactory;
 
 public class TelevisionService {
     private static final Random RANDOM = new Random();
-    private static final TelevisionRepository REPOSITORY = new TelevisionRepository();
+    private final TelevisionRepository repository;
     private static final Logger logger = LoggerFactory.getLogger(TelevisionService.class);
+
+    public TelevisionService(TelevisionRepository repository) {
+        this.repository = repository;
+    }
 
     public void createAndSaveTelevisions(int count){
         List<Television> televisions = new LinkedList<>();
+        if (count < 1 ){
+            throw new IllegalArgumentException("Count must be bigger than 0");
+        }
         for (int i = 0; i < count; i++){
             televisions.add(new Television(
                     "Title - " + RANDOM.nextInt(500),
@@ -28,7 +36,7 @@ public class TelevisionService {
             ));
             logger.info("SAVE " + televisions);
         }
-        REPOSITORY.saveAll(televisions);
+        repository.saveAll(televisions);
     }
 
     private ManufacturerTelevision getRandomManufacturer() {
@@ -37,20 +45,24 @@ public class TelevisionService {
         return values[index];
     }
     public void printAll() {
-        for (Television television : REPOSITORY.getAll()) {
+        for (Television television : repository.getAll()) {
             System.out.println(television);
         }
     }
     public void update(Television television){
-        REPOSITORY.update(television);
+        repository.update(television);
     }
     public List<Television> getAll(){
-        return REPOSITORY.getAll();
+        return repository.getAll();
     }
-    public Optional<Television> findById(String id){
-        return REPOSITORY.findById(id);
+    public Optional<Television> findById(String id){return repository.findById(id);}
+    public void delete(String id) {
+            repository.delete(id);
     }
-    public void delete(String id){
-        REPOSITORY.delete(id);
+    public void saveTelevision(Television television){
+        if (television.getCount() == 0){
+            television.setCount(-1);
+        }
+        repository.save(television);
     }
 }
