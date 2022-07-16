@@ -5,9 +5,10 @@ import com.model.phone.Manufacturer;
 import lombok.Getter;
 import lombok.Setter;
 
+
 @Getter
 @Setter
-public class Computer extends Product {
+public class Computer extends Product{
     private final String model;
     private final ManufacturerComputer manufacturer;
 

@@ -6,34 +6,51 @@ import com.repository.computer.ComputerRepository;
 import com.repository.phone.PhoneRepository;
 import com.repository.television.TelevisionRepository;
 import com.service.ComputerService;
+import com.service.OptionalEx;
 import com.service.PhoneService;
 import com.service.TelevisionService;
 
 
 public class Main {
-    private static final PhoneService PHONE_SERVICE = new PhoneService(new PhoneRepository());
-    private static final ComputerService COMPUTER_SERVICE = new ComputerService(new ComputerRepository());
-    private static final TelevisionService TELEVISION_SERVICE = new TelevisionService(new TelevisionRepository());
+    private static final PhoneRepository anotherRepository = new PhoneRepository();
+    private static final ComputerRepository repository = new ComputerRepository();
+    private static final ComputerService COMPUTER_SERVICE = new ComputerService(repository);
+    private static final OptionalEx OPTIONAL_EX = new OptionalEx(repository);
 
     public static void main(String[] args) {
-        System.out.println("~~~~~~~~~PHONES~~~~~~~~~~~~~~");
-        PHONE_SERVICE.createAndSavePhones(4);
-        PHONE_SERVICE.printAll();
-        System.out.println("~~~~~~~~~~~~~COMPUTERS~~~~~~~~~~~~~~");
-        COMPUTER_SERVICE.createAndSaveComputers(3);
+        COMPUTER_SERVICE.createAndSaveComputers(4);
+        optionalEx();
         COMPUTER_SERVICE.printAll();
-        System.out.println("~~~~~~~~~~~~~TELESIVIONS~~~~~~~~~~~~~~");
-        TELEVISION_SERVICE.createAndSaveTelevisions(3);
-        TELEVISION_SERVICE.printAll();
-        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~UPDATING COMPUTER'S COUNT (INDEX 2) to 1.~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        Computer computer = COMPUTER_SERVICE.getAll().get(2);
-        computer.setCount(1);
-        COMPUTER_SERVICE.update(computer);
-        System.out.println("Computers updated!");
-        COMPUTER_SERVICE.printAll();
-        System.out.println("~~~~~~~~~~~~~~~DELETING TELEVISION~~~~~~~~~~~~~~~~~~~~~~~~~");
-        Television television = TELEVISION_SERVICE.getAll().get(1);
-        TELEVISION_SERVICE.delete(television.getId());
-        TELEVISION_SERVICE.printAll();
+
+
     }
+    public static void optionalEx(){
+        final String id = COMPUTER_SERVICE.getAll().get(0).getId();
+        COMPUTER_SERVICE.printAll();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        OPTIONAL_EX.deleteIfPresent(id);
+        COMPUTER_SERVICE.printAll();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        OPTIONAL_EX.findOrCreateDefault(id);
+        COMPUTER_SERVICE.printAll();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        OPTIONAL_EX.findByIdOrCreateNewComputer(id);
+        COMPUTER_SERVICE.printAll();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        OPTIONAL_EX.mapComputer("231141");
+        COMPUTER_SERVICE.printAll();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        final String id2 = COMPUTER_SERVICE.getAll().get(3).getId();
+        OPTIONAL_EX.updateOrSave(id2);
+        COMPUTER_SERVICE.printAll();
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        OPTIONAL_EX.deleteAppleComputer(id);
+        COMPUTER_SERVICE.printAll();
+        OPTIONAL_EX.findThrow(id2);
+
+
+
+    }
+
+
 }

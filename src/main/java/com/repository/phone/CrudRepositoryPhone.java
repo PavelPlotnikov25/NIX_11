@@ -1,9 +1,12 @@
 package com.repository.phone;
 
+import com.model.computer.Computer;
 import com.model.phone.Phone;
+import com.model.television.Television;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public interface CrudRepositoryPhone {
     void save(Phone phone);

@@ -13,7 +13,7 @@ import java.util.Random;
 
 
 public class ComputerService {
-    private static final Random RANDOM = new Random();
+    static final Random RANDOM = new Random();
     private static final Logger logger = LoggerFactory.getLogger(ComputerService.class);
     private final ComputerRepository repository;
 
