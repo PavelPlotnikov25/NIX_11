@@ -15,15 +15,27 @@ public class ComputerRepository implements CrudRepositoryComputer {
     }
 
     @Override
-    public void save(Computer computer) {
+    public Computer save(Computer computer) {
         if (computer == null) {
             throw new IllegalArgumentException("Cannot save a null computer");
         } else {
             computers.add(computer);
         }
+        return computer;
     }
 
-
+    @Override
+    public boolean delete(String id) {
+        final Iterator<Computer> iterator = computers.iterator();
+        while (iterator.hasNext()) {
+            final Computer computer = iterator.next();
+            if (computer.getId().equals(id)) {
+                iterator.remove();
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void saveAll(List<Computer> computers) {
@@ -41,20 +53,6 @@ public class ComputerRepository implements CrudRepositoryComputer {
         final Computer originPhone = result.get();
         ComputerCopy.copy(computer, originPhone);
         return true;
-    }
-
-    @Override
-    public boolean delete(String id) {
-        final Iterator<Computer> iterator = computers.iterator();
-        while (iterator.hasNext()) {
-            final Computer computer = iterator.next();
-            if (computer.getId().equals(id)) {
-                iterator.remove();
-                logger.info("DELETE " + computer);
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override
