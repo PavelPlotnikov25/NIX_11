@@ -1,10 +1,9 @@
 package com.service;
 
 
-import com.model.Product;
 import com.model.computer.Computer;
 import com.model.computer.ManufacturerComputer;
-import com.repository.computer.ComputerRepository;
+import com.repository.ComputerRepository;
 import java.util.Optional;
 import java.util.Random;
 
@@ -24,11 +23,10 @@ public class OptionalEx {
         Computer computer;
         repository.findById(id).
       orElse(repository.save
-              (computer = new Computer(" ", 0, 0, "Default Model", ManufacturerComputer.APPLE)));
+              (new Computer(" ", 0, 0, "Default Model", ManufacturerComputer.APPLE)));
     }
     public Computer findByIdOrCreateNewComputer(String id){
-        Computer computer = repository.findById(id).orElseGet(() -> createAndSaveNewComputer());
-        return computer;
+        return repository.findById(id).orElseGet(this::createAndSaveNewComputer);
     }
     private Computer createAndSaveNewComputer(){
         Computer computer = new Computer("Title",
@@ -40,10 +38,9 @@ public class OptionalEx {
         return computer;
     }
     public String mapComputer(String id){
-        String computer = repository.findById(id)
+        return repository.findById(id)
                 .map(Computer::toString)
                 .orElse("Computer don't found");
-        return computer;
     }
     public void updateOrSave(String id){
         repository.findById(id)

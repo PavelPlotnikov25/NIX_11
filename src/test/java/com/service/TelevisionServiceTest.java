@@ -1,19 +1,16 @@
 package com.service;
 
 
-import com.model.computer.Computer;
-import com.model.computer.ManufacturerComputer;
 import com.model.television.ManufacturerTelevision;
 import com.model.television.Television;
-import com.repository.television.TelevisionRepository;
+import com.repository.CrudRepository;
+import com.repository.TelevisionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.mockito.internal.invocation.RealMethod;
-
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,15 +29,15 @@ class TelevisionServiceTest {
 
     @Test
     void createAndSaveTelevisionsWrongCount() {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveTelevisions(-1));
+        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveProduct(-1));
     }
     @Test
     void createAndSaveTelevisionsZeroCount() {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveTelevisions(0));
+        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveProduct(0));
     }
     @Test
     void createAndSaveTelevisions() {
-        target.createAndSaveTelevisions(3);
+        target.createAndSaveProduct(3);
         Mockito.verify(repository).saveAll(Mockito.anyList());
     }
 
@@ -53,7 +50,7 @@ class TelevisionServiceTest {
     @Test
     void update() {
         Television television = new Television("Title", 5, 139,"Model 11 PRO", ManufacturerTelevision.SONY, 55);
-        target.saveTelevision(television);
+        target.save(television);
         television.setTitle("UPDATED");
         target.update(television);
         target.getAll();
@@ -76,7 +73,7 @@ class TelevisionServiceTest {
     @Test
     void saveTelevision() {
         final Television television = new Television("Title", 25, 199, "MODEL FHD", ManufacturerTelevision.LG, 65);
-        target.saveTelevision(television);
+        target.save(television);
         ArgumentCaptor<Television> argumentCaptor = ArgumentCaptor.forClass(Television.class);
         Mockito.verify(repository).save(argumentCaptor.capture());
         assertEquals("Title", argumentCaptor.getValue().getTitle());
@@ -84,7 +81,7 @@ class TelevisionServiceTest {
     @Test
     void saveTelevisionZeroCount() {
         final Television television = new Television("Title", 0, 199, "MODEL FHD", ManufacturerTelevision.SONY, 32);
-        target.saveTelevision(television);
+        target.save(television);
         ArgumentCaptor<Television> argumentCaptor = ArgumentCaptor.forClass(Television.class);
         Mockito.verify(repository).save(argumentCaptor.capture());
         Assertions.assertEquals("Title", argumentCaptor.getValue().getTitle());

@@ -1,26 +1,26 @@
-package com.repository.television;
+package com.repository;
 
-import com.model.phone.Phone;
+import com.model.computer.Computer;
 import com.model.television.Television;
-import com.repository.phone.PhoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class TelevisionRepository implements CrudRepositoryTelevision {
+public class TelevisionRepository implements CrudRepository<Television> {
     private final List<Television> televisions;
     private final Logger logger = LoggerFactory.getLogger(TelevisionRepository.class);
 
     public TelevisionRepository() {televisions = new LinkedList<>();}
 
     @Override
-    public void save(Television television) {
+    public Computer save(Television television) {
         if (television == null) {
             throw new IllegalArgumentException("Cannot save a null television");
         } else {
             televisions.add(television);
         }
+        return null;
     }
 
     @Override
