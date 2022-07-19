@@ -1,22 +1,20 @@
 package com.service;
 
+
 import com.model.computer.Computer;
 import com.model.computer.ManufacturerComputer;
-import com.model.phone.Manufacturer;
-import com.model.phone.Phone;
-import com.repository.computer.ComputerRepository;
-import com.repository.phone.PhoneRepository;
+import com.model.television.ManufacturerTelevision;
+import com.model.television.Television;
+import com.repository.ComputerRepository;
+import com.repository.CrudRepository;
+import com.repository.TelevisionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
-
-import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -33,19 +31,18 @@ class ComputerServiceTest {
     }
 
     @Test
-    void createAndSaveComputersWrongCount() {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveComputers(-1));
+    void createAndSaveProductWrongCount() {
+        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveProduct(-1));
     }
     @Test
-    void createAndSaveComputersZeroCount() {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveComputers(0));
+    void createAndSaveProductZeroCount() {
+        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveProduct(0));
     }
     @Test
-    void createAndSaveComputers() {
-        target.createAndSaveComputers(2);
+    void createAndSaveProduct() {
+        target.createAndSaveProduct(3);
         Mockito.verify(repository).saveAll(Mockito.anyList());
     }
-
 
     @Test
     void printAll() {
@@ -55,15 +52,14 @@ class ComputerServiceTest {
 
     @Test
     void update() {
-        Computer computer  = new Computer("Title", 5, 139,"Model X", ManufacturerComputer.ASUS);
-        target.saveComputer(computer);
+        Computer computer = new Computer("Title", 5, 139,"Model 11 PRO", ManufacturerComputer.APPLE);
+        target.save(computer);
         computer.setTitle("UPDATED");
         target.update(computer);
         target.getAll();
         ArgumentCaptor<Computer> argumentCaptor = ArgumentCaptor.forClass(Computer.class);
         Mockito.verify(repository).update(argumentCaptor.capture());
         Assertions.assertEquals("UPDATED", argumentCaptor.getValue().getTitle());
-
     }
 
     @Test
@@ -77,29 +73,27 @@ class ComputerServiceTest {
         Assertions.assertThrows(NullPointerException.class, () -> target.getAll());
         Mockito.verify(repository).getAll();
     }
-
     @Test
-    void saveComputer() {
-        final Computer computer = new Computer("Title", 25, 199, "MODEL X", ManufacturerComputer.ASUS);
-        target.saveComputer(computer);
+    void saveProduct() {
+        final Computer computer = new Computer("Title", 25, 199, "MODEL FHD", ManufacturerComputer.ASUS);
+        target.save(computer);
         ArgumentCaptor<Computer> argumentCaptor = ArgumentCaptor.forClass(Computer.class);
         Mockito.verify(repository).save(argumentCaptor.capture());
         assertEquals("Title", argumentCaptor.getValue().getTitle());
     }
     @Test
-    void saveComputerZeroCount() {
-        final Computer computer = new Computer("Title", 0, 199, "MODEL X", ManufacturerComputer.ASUS);
-        target.saveComputer(computer);
+    void saveTelevisionZeroCount() {
+        final Computer computer = new Computer("Title", 0, 199, "MODEL FHD", ManufacturerComputer.HP);
+        target.save(computer);
         ArgumentCaptor<Computer> argumentCaptor = ArgumentCaptor.forClass(Computer.class);
         Mockito.verify(repository).save(argumentCaptor.capture());
         Assertions.assertEquals("Title", argumentCaptor.getValue().getTitle());
         Assertions.assertEquals(-1, argumentCaptor.getValue().getCount() );
     }
 
-
     @Test
     void findById() {
-        final Computer computer = new Computer("Title", 1, 199, "MODEL 3310", ManufacturerComputer.ASUS);
+        final Computer computer = new Computer("Title", 1, 199, "MODEL 3310", ManufacturerComputer.HP);
         Mockito.when(repository.findById(computer.getId())).thenReturn(Optional.of(computer));
         Assertions.assertEquals(repository.findById(computer.getId()), Optional.of(computer));
     }
@@ -112,9 +106,9 @@ class ComputerServiceTest {
 
     @Test
     public void findById_byArgumentMatchers() {
-        final Computer computer = new Computer("Title", 2, 199, "X560", ManufacturerComputer.APPLE);
-        when(repository.findById(ArgumentMatchers.argThat(id -> {
-            assertEquals("2532153", id);
+        final Computer computer = new Computer("Title", 2, 199, "X560", ManufacturerComputer.ASUS);
+        Mockito.when(repository.findById(ArgumentMatchers.argThat(id -> {
+            Assertions.assertEquals("2532153", id);
             return true;
         }))).thenReturn(Optional.of(computer));
 
@@ -125,9 +119,10 @@ class ComputerServiceTest {
     }
     @Test
     void delete() {
-        Computer computer1 = new Computer("Title", 1, 199, "MODEL 3310", ManufacturerComputer.ASUS);
-        Computer computer2 = new Computer("Title", 1, 99, "MODEL 3310", ManufacturerComputer.ACER);
-        target.delete(computer2.getId());
-        Mockito.verify(repository,Mockito.times(1)).delete(computer2.getId());
+        Computer computer1 = new Computer("Title", 1, 199, "MODEL 3310", ManufacturerComputer.APPLE);
+        Computer computer2 = new Computer("Title", 1, 399, "MODEL 3310", ManufacturerComputer.APPLE);
+        target.delete(computer1.getId());
+        Mockito.verify(repository,Mockito.times(1)).delete(computer1.getId());
     }
+
 }

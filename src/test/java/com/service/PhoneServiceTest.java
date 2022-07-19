@@ -1,22 +1,29 @@
 package com.service;
 
+
+import com.model.computer.Computer;
+import com.model.computer.ManufacturerComputer;
 import com.model.phone.Manufacturer;
 import com.model.phone.Phone;
-import com.repository.phone.PhoneRepository;
+import com.model.television.ManufacturerTelevision;
+import com.model.television.Television;
+import com.repository.ComputerRepository;
+import com.repository.CrudRepository;
+import com.repository.PhoneRepository;
+import com.repository.TelevisionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.*;
-
+import org.mockito.ArgumentCaptor;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.when;
 
 class PhoneServiceTest {
-
     private PhoneService target;
     private PhoneRepository repository;
 
@@ -27,25 +34,29 @@ class PhoneServiceTest {
     }
 
     @Test
-    void createAndSavePhonesWrongCount() {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSavePhones(-1));
+    void createAndSaveProductWrongCount() {
+        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveProduct(-1));
     }
     @Test
-    void createAndSavePhonesZeroCount() {
-        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSavePhones(0));
+    void createAndSaveProductZeroCount() {
+        Assertions.assertThrows(IllegalArgumentException.class,() -> target.createAndSaveProduct(0));
     }
-
     @Test
-    void createAndSavePhones() {
-        target.createAndSavePhones(4);
+    void createAndSaveProduct() {
+        target.createAndSaveProduct(3);
         Mockito.verify(repository).saveAll(Mockito.anyList());
     }
 
+    @Test
+    void printAll() {
+        target.printAll();
+        Mockito.verify(repository).getAll();
+    }
 
     @Test
     void update() {
         Phone phone = new Phone("Title", 5, 139,"Model 11 PRO", Manufacturer.APPLE);
-        target.savePhone(phone);
+        target.save(phone);
         phone.setTitle("UPDATED");
         target.update(phone);
         target.getAll();
@@ -65,24 +76,18 @@ class PhoneServiceTest {
         Assertions.assertThrows(NullPointerException.class, () -> target.getAll());
         Mockito.verify(repository).getAll();
     }
-
-    @Test
-    void printAll() {
-        target.printAll();
-        Mockito.verify(repository).getAll();
-    }
     @Test
     void savePhone() {
-        final Phone phone = new Phone("Title", 25, 199, "MODEL S10", Manufacturer.SAMSUNG);
-        target.savePhone(phone);
+        final Phone phone = new Phone("Title", 25, 199, "MODEL FHD", Manufacturer.SONY);
+        target.save(phone);
         ArgumentCaptor<Phone> argumentCaptor = ArgumentCaptor.forClass(Phone.class);
         Mockito.verify(repository).save(argumentCaptor.capture());
         assertEquals("Title", argumentCaptor.getValue().getTitle());
     }
     @Test
     void savePhoneZeroCount() {
-        final Phone phone = new Phone("Title", 0, 199, "MODEL 3310", Manufacturer.NOKIA);
-        target.savePhone(phone);
+        final Phone phone = new Phone("Title", 0, 199, "MODEL FHD", Manufacturer.NOKIA);
+        target.save(phone);
         ArgumentCaptor<Phone> argumentCaptor = ArgumentCaptor.forClass(Phone.class);
         Mockito.verify(repository).save(argumentCaptor.capture());
         Assertions.assertEquals("Title", argumentCaptor.getValue().getTitle());
@@ -92,13 +97,19 @@ class PhoneServiceTest {
     @Test
     void findById() {
         final Phone phone = new Phone("Title", 1, 199, "MODEL 3310", Manufacturer.NOKIA);
-        when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
+        Mockito.when(repository.findById(phone.getId())).thenReturn(Optional.of(phone));
         Assertions.assertEquals(repository.findById(phone.getId()), Optional.of(phone));
+    }
+    @Test
+    void findById_IncorrectId() {
+        Mockito.when(repository.findById(anyString())).thenThrow(IllegalArgumentException.class);
+        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findById(anyString()));
+        Mockito.verify(repository).findById(anyString());
     }
 
     @Test
     public void findById_byArgumentMatchers() {
-        final Phone phone = new Phone("Title", 1, 199, "MODEL 3310", Manufacturer.NOKIA);
+        final Phone phone = new Phone("Title", 2, 199, "X560", Manufacturer.APPLE);
         Mockito.when(repository.findById(ArgumentMatchers.argThat(id -> {
             Assertions.assertEquals("2532153", id);
             return true;
@@ -109,20 +120,12 @@ class PhoneServiceTest {
         Assertions.assertTrue(actualPhone.isPresent());
         Assertions.assertEquals(phone.getId(), actualPhone.get().getId());
     }
-
-    @Test
-    void findById_IncorrectId() {
-        when(repository.findById(anyString())).thenThrow(IllegalArgumentException.class);
-        Assertions.assertThrows(IllegalArgumentException.class, () -> target.findById(anyString()));
-        Mockito.verify(repository).findById(anyString());
-    }
-
-
     @Test
     void delete() {
-        Phone phone1 = new Phone("Title", 1, 199, "MODEL 3310", Manufacturer.NOKIA);
-        Phone phone2 = new Phone("Title", 1, 399, "MODEL 3310", Manufacturer.NOKIA);
+        Phone phone1 = new Phone("Title", 1, 199, "MODEL 3310", Manufacturer.SAMSUNG);
+        Phone phone2 = new Phone("Title", 1, 399, "MODEL 3310", Manufacturer.XIAOMI);
         target.delete(phone1.getId());
         Mockito.verify(repository,Mockito.times(1)).delete(phone1.getId());
     }
+
 }

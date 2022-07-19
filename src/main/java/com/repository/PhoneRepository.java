@@ -1,13 +1,13 @@
-package com.repository.phone;
+package com.repository;
 
+import com.model.computer.Computer;
 import com.model.phone.Phone;
-import com.model.television.Television;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class PhoneRepository implements CrudRepositoryPhone {
+public class PhoneRepository implements CrudRepository<Phone> {
     private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
@@ -16,12 +16,13 @@ public class PhoneRepository implements CrudRepositoryPhone {
     }
 
     @Override
-    public void save(Phone phone) {
+    public Computer save(Phone phone) {
         if (phone == null){
             throw new IllegalArgumentException();
         }else {
         phones.add(phone);
         }
+        return null;
     }
 
     @Override

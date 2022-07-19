@@ -2,14 +2,12 @@ package com.service;
 
 import com.model.computer.Computer;
 import com.model.computer.ManufacturerComputer;
-import com.repository.computer.ComputerRepository;
+import com.repository.ComputerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class OptionalExTest {
     private OptionalEx target;
@@ -80,14 +78,14 @@ class OptionalExTest {
         Mockito.when(repository.findById(computer.getId())).thenReturn(Optional.of(computer));
         String testingComputer = target.mapComputer(computer.getId());
         Mockito.verify(repository).findById(computer.getId());
-        Assertions.assertEquals(testingComputer, testingComputer.toString());
+        Assertions.assertEquals(testingComputer, testingComputer);
     }
     @Test
     void mapComputerNegative() {
         Computer computer = new Computer("Title",10,0,"--", ManufacturerComputer.ACER);
         String testingComputer = target.mapComputer(computer.getId());
         Mockito.verify(repository).findById(computer.getId());
-        Assertions.assertEquals("Computer don't found", testingComputer.toString());
+        Assertions.assertEquals("Computer don't found", testingComputer);
     }
     @Test
     void updateOrSave() {

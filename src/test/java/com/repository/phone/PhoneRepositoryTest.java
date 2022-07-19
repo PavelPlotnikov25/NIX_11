@@ -1,17 +1,13 @@
 package com.repository.phone;
 
-import com.model.computer.Computer;
-import com.model.computer.ManufacturerComputer;
 import com.model.phone.Manufacturer;
 import com.model.phone.Phone;
-import com.repository.computer.ComputerRepository;
+import com.repository.PhoneRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class PhoneRepositoryTest {
 

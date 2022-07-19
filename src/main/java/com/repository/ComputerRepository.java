@@ -1,4 +1,4 @@
-package com.repository.computer;
+package com.repository;
 
 import com.model.computer.Computer;
 import org.slf4j.Logger;
@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class ComputerRepository implements CrudRepositoryComputer {
+public class ComputerRepository implements CrudRepository<Computer> {
     private final List<Computer> computers;
     private final Logger logger = LoggerFactory.getLogger(ComputerRepository.class);
 

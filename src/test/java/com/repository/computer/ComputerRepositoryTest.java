@@ -2,13 +2,12 @@ package com.repository.computer;
 
 import com.model.computer.Computer;
 import com.model.computer.ManufacturerComputer;
+import com.repository.ComputerRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ComputerRepositoryTest {
     private ComputerRepository target;
