@@ -1,5 +1,6 @@
 package com.model;
 
+import com.model.phone.Phone;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,4 +20,6 @@ public abstract class Product {
         this.count = count;
         this.price = price;
     }
+    abstract public Product copy() throws CloneNotSupportedException;
+
 }

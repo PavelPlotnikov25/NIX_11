@@ -1,7 +1,6 @@
 package com.model.computer;
 
 import com.model.Product;
-import com.model.phone.Manufacturer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,5 +26,15 @@ public class Computer extends Product{
                 ", count=" + count +
                 ", price=" + price +
                 '}';
+    }
+
+    @Override
+    public Product copy(){
+        return new Computer(
+                this.title,
+                this.count,
+                this.price,
+                this.model,
+                this.manufacturer);
     }
 }
