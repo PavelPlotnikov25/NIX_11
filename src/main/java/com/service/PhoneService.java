@@ -4,9 +4,24 @@ import com.model.phone.Manufacturer;
 import com.model.phone.Phone;
 import com.model.television.ManufacturerTelevision;
 import com.repository.CrudRepository;
+import com.repository.PhoneRepository;
 
 public class PhoneService extends ProductService<Phone> {
     public PhoneService(CrudRepository<Phone> repository){super(repository);}
+    private static PhoneService instance;
+
+    private PhoneService(final PhoneRepository repository){
+        super(repository);
+        this.repository = repository;
+    }
+
+    public static PhoneService getInstance(){
+        if (instance == null){
+            instance = new PhoneService(PhoneRepository.getInstance());
+        }
+        return instance;
+    }
+
 
     @Override
     protected Phone createProduct() {

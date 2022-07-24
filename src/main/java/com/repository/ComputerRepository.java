@@ -14,6 +14,16 @@ public class ComputerRepository implements CrudRepository<Computer> {
         computers = new LinkedList<>();
     }
 
+    private static ComputerRepository instance;
+
+
+    public static ComputerRepository getInstance() {
+        if (instance == null) {
+            instance = new ComputerRepository();
+        }
+        return instance;
+    }
+
     @Override
     public Computer save(Computer computer) {
         if (computer == null) {

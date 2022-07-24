@@ -13,6 +13,15 @@ public class TelevisionRepository implements CrudRepository<Television> {
 
     public TelevisionRepository() {televisions = new LinkedList<>();}
 
+    private static TelevisionRepository instance;
+
+    public static CrudRepository<Television> getInstance() {
+        if (instance == null) {
+            instance = new TelevisionRepository();
+        }
+        return instance;
+    }
+
     @Override
     public Computer save(Television television) {
         if (television == null) {

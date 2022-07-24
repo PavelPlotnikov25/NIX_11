@@ -29,23 +29,23 @@ public class ProductVersionList implements Iterable<ProductVersion> {
     }
 
     public boolean replaceByVersion(Product product, int version){
-        ProductVersion productVersion = searchByVersion(version);
+        Optional<ProductVersion> productVersion = searchByVersion(version);
         if (Objects.isNull(productVersion)){
             return false;
         }
-        productVersion.setProduct(product);
-        productVersion.setDateOfAdding(new Date());
+        productVersion.get().setProduct(product);
+        productVersion.get().setDateOfAdding(new Date());
         return true;
     }
 
-    public ProductVersion searchByVersion(int version) {
+    public Optional<ProductVersion> searchByVersion(int version) {
         Node node;
         for (node = first; node != null; node = node.next){
             if (version == node.currentElement.getVersion()){
-                return node.currentElement;
+                return Optional.ofNullable(node.currentElement);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     public Date getDateFirstVersion(){
@@ -89,11 +89,11 @@ public class ProductVersionList implements Iterable<ProductVersion> {
 
 
     public boolean deleteByVersion(int version){
-        ProductVersion productVersion = searchByVersion(version);
+        Optional<ProductVersion> productVersion = searchByVersion(version);
         if (Objects.isNull(productVersion)){
             return false;
         }
-        return remove(productVersion);
+        return remove(productVersion.get());
     }
 
     private boolean remove(ProductVersion productVersion) {
