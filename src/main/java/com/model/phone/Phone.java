@@ -26,4 +26,14 @@ public class Phone extends Product {
                 ", price=" + price +
                 '}';
     }
+
+    @Override
+    public Product copy(){
+        return new Phone(
+                this.title,
+                this.count,
+                this.price,
+                this.model,
+                this.manufacturer);
+    }
 }

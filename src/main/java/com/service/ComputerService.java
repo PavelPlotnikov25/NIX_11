@@ -5,6 +5,7 @@ import com.model.computer.ManufacturerComputer;
 import com.model.phone.Manufacturer;
 import com.repository.ComputerRepository;
 import com.repository.CrudRepository;
+import com.repository.PhoneRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,20 @@ import java.util.Random;
 
 
 public class ComputerService extends ProductService<Computer>{
-    public ComputerService(CrudRepository<Computer> repository){super(repository);}
+    private final ComputerRepository repository;
+    private static ComputerService instance;
+
+    protected ComputerService(final ComputerRepository repository){
+        super(repository);
+        this.repository = repository;
+    }
+
+    public static ComputerService getInstance(){
+        if (instance == null){
+            instance = new ComputerService(ComputerRepository.getInstance());
+        }
+        return instance;
+    }
     @Override
     protected Computer createProduct() {
         return new Computer(

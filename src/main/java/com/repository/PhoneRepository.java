@@ -11,8 +11,17 @@ public class PhoneRepository implements CrudRepository<Phone> {
     private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
+    private static PhoneRepository instance;
+
     public PhoneRepository() {
         phones = new LinkedList<>();
+    }
+
+    public static CrudRepository<Phone> getInstance() {
+        if (instance == null){
+            instance = new PhoneRepository();
+        }
+        return instance;
     }
 
     @Override

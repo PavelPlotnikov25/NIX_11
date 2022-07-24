@@ -1,8 +1,6 @@
 package com.model.television;
 
 import com.model.Product;
-import com.model.computer.ManufacturerComputer;
-import com.model.phone.Manufacturer;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,4 +31,16 @@ public class Television extends Product {
                 ", price=" + price +
                 '}';
     }
+
+    @Override
+    public Product copy(){
+        return new Television(
+                this.title,
+                this.count,
+                this.price,
+                this.model,
+                this.manufacturer,
+                this.diagonal);
+    }
+
 }
