@@ -82,9 +82,8 @@ public static class Node<T extends Product> {
     }
     public static void main(String[] args) {
             PhoneService phoneService = PhoneService.getInstance();
-            for (int i = 0; i < 10; i++) {
-                phoneService.createAndSaveProduct(1);
-            }
+                phoneService.createAndSaveProduct(10);
+
 
             MyTree<Phone> tree = new MyTree<>();
             phoneService.getAll().forEach(phone -> tree.add(phone));
