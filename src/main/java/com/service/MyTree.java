@@ -4,20 +4,14 @@ import com.model.Product;
 import com.model.ProductComparator;
 import com.model.phone.Phone;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 public class MyTree<E extends Product> {
-    private Node root;
+    private Node<E> root;
     private final ProductComparator<E> productComparator = new ProductComparator<>();
 
 
-    private Node addRecursive(Node current, E value) {
+    private Node<E> addRecursive(Node<E> current, E value) {
         if (current == null) {
-            return new Node<E>(value);
+            return new Node(value);
         }
 
         if (productComparator.compare((E) current.value, value) > 0) {
@@ -96,7 +90,7 @@ public static class Node<T extends Product> {
             phoneService.getAll().forEach(phone -> tree.add(phone));
             printBinaryTree(tree.root, 0);
 
-            System.out.println("\n\n\n\n\n");
+            System.out.println();
             System.out.println("Left branch sum: " + tree.sumLeft());
             System.out.println("Right branch sum: " + tree.sumRight());
         }
