@@ -37,7 +37,7 @@ public abstract class ProductService<T extends Product> {
             System.out.println(product);
         }
     }
-    public void update(T product){repository.update(product);}
+    public void update(Product product){repository.update((T) product);}
     public List<T> getAll(){return repository.getAll();}
     public Optional<T> findById(String id){return repository.findById(id);}
     public void delete(String id) {
