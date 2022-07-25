@@ -15,9 +15,9 @@ public class MyTree<E extends Product> {
         }
 
         if (productComparator.compare((E) current.value, value) > 0) {
-            current.left = addRecursive(current.left, value);
+            current.leftChild = addRecursive(current.leftChild, value);
         } else if (productComparator.compare((E) current.value, value) < 0) {
-            current.right = addRecursive(current.right, value);
+            current.rightChild = addRecursive(current.rightChild, value);
         } else {
             return current;
         }
@@ -31,46 +31,46 @@ public class MyTree<E extends Product> {
     private long sum(Node<E> root) {
         if (root == null)
             return 0;
-        return (long) (root.value.getPrice() + sum(root.left) +
-                sum(root.right));
+        return (long) (root.value.getPrice() + sum(root.leftChild) +
+                sum(root.rightChild));
     }
 
     private long sumLeft() {
         if (root == null)
             return 0;
-        return (long) sum(root.left);
+        return (long) sum(root.leftChild);
     }
 
     private long sumRight() {
         if (root == null)
             return 0;
-        return (long) sum(root.right);
+        return (long) sum(root.rightChild);
     }
 
 public static class Node<T extends Product> {
     T value;
-    Node<T> left;
-    Node<T> right;
+    Node<T> leftChild;
+    Node<T> rightChild;
 
     public Node<T> getLeft() {
-        return left;
+        return leftChild;
     }
 
     public Node<T> getRight() {
-        return right;
+        return rightChild;
     }
 
     public Node(T value) {
         this.value = value;
-        this.left = null;
-        this.right = null;
+        this.leftChild = null;
+        this.rightChild = null;
     }
 }
 
     public static void printBinaryTree(Node node, int level){
         if(node==null)
             return;
-        printBinaryTree(node.right, level+1);
+        printBinaryTree(node.rightChild, level+1);
         if(level!=0){
             for(int i=0;i<level-1;i++)
                 System.out.print("|\t");
@@ -78,18 +78,18 @@ public static class Node<T extends Product> {
         }
         else
             System.out.println(node.value);
-        printBinaryTree(node.left, level+1);
+        printBinaryTree(node.leftChild, level+1);
     }
     public static void main(String[] args) {
 
             PhoneService phoneService = PhoneService.getInstance();
             phoneService.createAndSaveProduct(10);
             MyTree<Phone> tree = new MyTree<>();
-            phoneService.getAll().forEach(phone -> tree.add(phone));
+            phoneService.getAll().forEach(tree::add);
             printBinaryTree(tree.root, 0);
             System.out.println();
-            System.out.println("Left branch sum: " + tree.sumLeft());
-            System.out.println("Right branch sum: " + tree.sumRight());
+            System.out.println("Sum of left branch products = : " + tree.sumLeft());
+            System.out.println("Sum of right branch products: " + tree.sumRight());
         }
     }
 
