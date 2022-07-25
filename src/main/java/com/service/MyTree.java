@@ -81,14 +81,12 @@ public static class Node<T extends Product> {
         printBinaryTree(node.left, level+1);
     }
     public static void main(String[] args) {
+
             PhoneService phoneService = PhoneService.getInstance();
-                phoneService.createAndSaveProduct(10);
-
-
+            phoneService.createAndSaveProduct(10);
             MyTree<Phone> tree = new MyTree<>();
             phoneService.getAll().forEach(phone -> tree.add(phone));
             printBinaryTree(tree.root, 0);
-
             System.out.println();
             System.out.println("Left branch sum: " + tree.sumLeft());
             System.out.println("Right branch sum: " + tree.sumRight());
