@@ -35,7 +35,7 @@ public class Update implements Command {
     }
 
     private void findProductToUpdate(ProductService<? extends Product> productService){
-        boolean flag = false;
+        boolean flag=false;
         while (!flag) {
             if (productService.getAll().isEmpty()) {
                 System.out.println("There are no products ");
@@ -44,7 +44,7 @@ public class Update implements Command {
                 final String userInputID = SCANNER.next();
                 final Optional<? extends Product> foundedProduct = productService.findById(userInputID);
                 if (foundedProduct.isEmpty()) {
-                    System.out.println("There are no products with id = " + String.valueOf(userInputID));
+                    System.out.println("There are no products with id = " + userInputID);
                 } else if (userInputID.equals(foundedProduct.get().getId())) {
                     System.out.println("enter a new title ");
                     final String newTitle = SCANNER.next();
@@ -58,7 +58,7 @@ public class Update implements Command {
                     foundedProduct.get().setTitle(newTitle);
                     productService.update(foundedProduct.get());
                     System.out.println(foundedProduct);
-                    flag = true;
+                    return;
                 }
             }
         }

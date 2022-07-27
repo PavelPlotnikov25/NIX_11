@@ -1,45 +1,26 @@
 package com;
+import com.command.*;
+import java.util.List;
 
-import com.command.Command;
-import com.command.Commands;
-import com.model.computer.Computer;
-import com.model.television.Television;
-import com.repository.ComputerRepository;
-import com.repository.TelevisionRepository;
-import com.service.*;
-
-import java.util.Random;
-
-import static com.command.Command.SCANNER;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        final Commands[] values = Commands.values();
-        boolean exit;
 
+        boolean exit = false;
+        final Commands[] values = Commands.values();
+        final List<String> names = UserInputUtil.getNamesOfType(values);
         do {
-            exit = userAction(values);
+            int commandIndex = UserInputUtil.getUserInput(values.length, names);
+            switch (values[commandIndex]) {
+                case CREATE -> new Create().execute();
+                case PRINT -> new Print().execute();
+                case UPDATE -> new Update().execute();
+                case DELETE -> new Delete().execute();
+                case EXIT -> exit = true;
+            }
+
         } while (!exit);
-    }
-    private static boolean userAction(final Commands[] values) {
-        int userCommand = -1;
-        do {
-            for (int i = 0; i < values.length; i++) {
-                System.out.printf("%d) %s%n", i, values[i].getName());
-            }
-            int input = SCANNER.nextInt();
-            if (input >= 0 && input < values.length) {
-                userCommand = input;
-            }
-        } while (userCommand == -1);
-        final Command command = values[userCommand].getCommand();
-        if (command == null) {
-            return true;
-        } else {
-            command.execute();
-            return false;
-        }
     }
 }

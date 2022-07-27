@@ -11,7 +11,7 @@ public class MyTree<E extends Product> {
 
     private Node<E> addRecursive(Node<E> current, E value) {
         if (current == null) {
-            return new Node(value);
+            return new Node<>(value);
         }
 
         if (productComparator.compare((E) current.value, value) > 0) {

@@ -3,6 +3,7 @@ package com.command;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserInputUtil {
@@ -34,5 +35,12 @@ public class UserInputUtil {
             System.out.println("Input is not valid");
         }
         return -1;
+    }
+    public static List<String> getNamesOfType(final Commands[] values) {
+        final List<String> names = new ArrayList<>(values.length);
+        for (Commands type : values) {
+            names.add(type.name());
+        }
+        return names;
     }
 }
