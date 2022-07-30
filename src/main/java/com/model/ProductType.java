@@ -1,5 +1,5 @@
 package com.model;
 
-public enum ProductType {
+public enum ProductType{
     PHONE, TELEVISION, COMPUTER
 }
