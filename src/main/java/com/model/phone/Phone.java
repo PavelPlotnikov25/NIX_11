@@ -14,14 +14,6 @@ public class Phone extends Product {
     private final String model;
     private final Manufacturer manufacturer;
 
-    public List<String> getDetails() {
-        return details;
-    }
-
-    public void setDetails(List<String> details) {
-        this.details = details;
-    }
-
     private List<String> details = new ArrayList<>();
 
 
@@ -38,6 +30,13 @@ public class Phone extends Product {
         this.manufacturer = manufacturer;
     }
 
+    public List<String> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<String> details) {
+        this.details = details;
+    }
     @Override
     public String toString() {
         return "Phone{" +

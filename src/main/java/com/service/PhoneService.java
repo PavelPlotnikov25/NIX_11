@@ -41,8 +41,7 @@ public class PhoneService extends ProductService<Phone> {
     public boolean checkDetails(String checkedDetail){
         return repository.getAll()
                 .stream()
-                .flatMap(phone -> phone.getDetails()
-                .stream())
+                .flatMap(phone -> phone.getDetails().stream())
                 .anyMatch(detail -> detail.equals(checkedDetail));
     }
 }
