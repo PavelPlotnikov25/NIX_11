@@ -7,6 +7,7 @@ import com.repository.CrudRepository;
 import com.repository.PhoneRepository;
 
 public class PhoneService extends ProductService<Phone> {
+
     public PhoneService(CrudRepository<Phone> repository){super(repository);}
     private static PhoneService instance;
 
@@ -36,5 +37,11 @@ public class PhoneService extends ProductService<Phone> {
         final Manufacturer[] values = Manufacturer.values();
         final int index = RANDOM.nextInt(values.length);
         return values[index];
+    }
+    public boolean checkDetails(String checkedDetail){
+        return repository.getAll()
+                .stream()
+                .flatMap(phone -> phone.getDetails().stream())
+                .anyMatch(detail -> detail.equals(checkedDetail));
     }
 }
