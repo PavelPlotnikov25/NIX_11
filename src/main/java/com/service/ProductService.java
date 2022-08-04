@@ -87,15 +87,15 @@ public abstract class ProductService<T extends Product> {
         return sum;
     }
 
-    public Map<String, ProductType> sortProductsToMap() {
-        final ProductType[] values = ProductType.values();
-        Map<String, ProductType> collect = repository.getAll()
-                .stream()
-                .distinct()
-                .sorted(Comparator.comparing(product -> product.getTitle()))
-                .collect(Collectors.toMap(product -> product.getId(), productType -> productType.getProductType(), (o1, o2) -> o2));
-        return collect;
-    }
+//    public Map<String, ProductType> sortProductsToMap() {
+//        final ProductType[] values = ProductType.values();
+//        Map<String, ProductType> collect = repository.getAll()
+//                .stream()
+//                .distinct()
+//                .sorted(Comparator.comparing(product -> product.getTitle()))
+//                .collect(Collectors.toMap(product -> product.getId(), productType -> productType.getProductType(), (o1, o2) -> o2));
+//        return collect;
+//    }
 
     public DoubleSummaryStatistics priceStatistics() {
         DoubleSummaryStatistics statistics = repository.getAll()

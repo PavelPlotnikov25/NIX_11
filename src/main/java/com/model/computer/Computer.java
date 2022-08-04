@@ -1,7 +1,6 @@
 package com.model.computer;
 
 import com.model.Product;
-import com.model.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +12,7 @@ public class Computer extends Product{
     private final ManufacturerComputer manufacturer;
 
     public Computer(String title, int count, double price, String model, ManufacturerComputer manufacturer) {
-        super(title, count, price, ProductType.COMPUTER);
+        super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
     }

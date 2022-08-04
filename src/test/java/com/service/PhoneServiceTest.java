@@ -1,16 +1,9 @@
 package com.service;
 
 
-import com.model.computer.Computer;
-import com.model.computer.ManufacturerComputer;
 import com.model.phone.Manufacturer;
 import com.model.phone.Phone;
-import com.model.television.ManufacturerTelevision;
-import com.model.television.Television;
-import com.repository.ComputerRepository;
-import com.repository.CrudRepository;
 import com.repository.PhoneRepository;
-import com.repository.TelevisionRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
