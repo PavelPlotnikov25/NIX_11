@@ -18,6 +18,7 @@ public class Phone extends Product {
     private Date date;
     private String currency;
     private OperationSystem os;
+    private ProductType type;
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer, Date date, String currency, OperationSystem os) {
         super(title, count, price);

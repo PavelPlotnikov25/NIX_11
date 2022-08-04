@@ -12,6 +12,15 @@ public abstract class Product{
     protected String title;
     protected int count;
     protected double price;
+
+    public ProductType getType() {
+        return type;
+    }
+
+    public void setType(ProductType type) {
+        this.type = type;
+    }
+
     protected ProductType type;
 
     protected Product(String title, int count, double price) {
