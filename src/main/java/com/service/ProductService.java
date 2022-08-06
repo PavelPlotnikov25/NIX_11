@@ -93,7 +93,7 @@ public abstract class ProductService<T extends Product> {
                 .stream()
                 .distinct()
                 .sorted(Comparator.comparing(product -> product.getTitle()))
-                .collect(Collectors.toMap(product -> product.getId(), productType -> productType.getProductType(), (o1, o2) -> o2));
+                .collect(Collectors.toMap(product -> product.getId(), productType -> productType.getType(), (o1, o2) -> o2));
         return collect;
     }
 
