@@ -1,0 +1,12 @@
+type,series,model,diagonal,screen type,country,price
+Telephone,S-10,Samsung,none,QLED,none,200
+Telephone,11Pro,Apple,none,OLED,none,1000
+Telephone,Redmi8,Nokia,none,OLED,none,250
+Telephone,P-30,Huawei,none,OLED,none,400
+Telephone,7S,Apple,none,QLED,none,350
+Television,RTI-14,none,25,LED,China,1500
+Television,48OLED806/12,none,48,OLED,China,990
+Television,UE32T4500AUXUA,none,32,LED,China,450
+Television,Mi-TV-P1-32,none,32,LED,China,400
+Television,OLED48A16LA,none,48,OLED,China,1990
+Television,,,,OLED,China,1990
