@@ -16,11 +16,12 @@ public class Main {
 
 
     public static void main(String[] args) throws IOException {
-        Utils.getStringFromFile("phone.xml");
-        PHONE_SERVICE.createProductFromXml("phone.xml");
-        Utils.getStringFromFile("phone.json");
-        PHONE_SERVICE.createProductFromJson("phone.json");
-        PHONE_SERVICE.printAll();
+
+
+
+//        PHONE_SERVICE.createProductFromXml("phone.xml");
+//        PHONE_SERVICE.createProductFromJson("phone.json");
+//        PHONE_SERVICE.printAll();
 
  //        boolean exit = false;
 //        final Commands[] values = Commands.values();
