@@ -1,4 +1,6 @@
 package com;
+import com.model.computer.Computer;
+import com.model.computer.ManufacturerComputer;
 import com.model.phone.Phone;
 import com.service.PhoneService;
 import com.service.ProductService;
@@ -15,7 +17,14 @@ public class Main {
     private static final PhoneService PHONE_SERVICE = PhoneService.getInstance();
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
+        Computer.Builder builder = new Computer.Builder(1);
+        builder.setCount(1000);
+        builder.setModel("TEST MODEL");
+        builder.setTitle("TEST TITLE");
+        builder.setManufacturer(ManufacturerComputer.APPLE);
+        Computer computer = builder.build();
+        System.out.println(computer);
 
 
 

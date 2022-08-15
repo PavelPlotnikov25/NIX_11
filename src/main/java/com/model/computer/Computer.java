@@ -4,18 +4,24 @@ import com.model.Product;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 
 @Getter
 @Setter
 public class Computer extends Product{
-    private final String model;
-    private final ManufacturerComputer manufacturer;
+    private String model;
+    private ManufacturerComputer manufacturer;
+
+
 
     public Computer(String title, int count, double price, String model, ManufacturerComputer manufacturer) {
         super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
     }
+    
+
 
     @Override
     public String toString() {
@@ -29,6 +35,20 @@ public class Computer extends Product{
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Computer computer = (Computer) o;
+        return model.equals(computer.model) && manufacturer == computer.manufacturer;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(model, manufacturer);
+    }
+
+
+    @Override
     public Product copy(){
         return new Computer(
                 this.title,
@@ -36,5 +56,45 @@ public class Computer extends Product{
                 this.price,
                 this.model,
                 this.manufacturer);
+    }
+
+    public static class Builder{
+        private Computer buildedComputer;
+
+        public Builder(double price) {
+            
+            if (price < 0) {
+                System.out.println("Price cannot be lower than 0");
+            } else {
+                buildedComputer = new Computer("Empty", 0,price, "empty model", null);
+            }
+        }
+
+        public Builder setTitle(String title){
+            buildedComputer.setTitle(title);
+            return this;
+        }
+
+        public Builder setCount(int count){
+            if (count < 0){
+                System.out.println("Count cannot be lower than 0");
+            }
+            buildedComputer.setCount(count);
+            return this;
+        }
+
+        public Builder setModel(String model){
+            buildedComputer.setModel(model);
+            return this;
+        }
+
+        public Builder setManufacturer(ManufacturerComputer manufacturer){
+            buildedComputer.setManufacturer(ManufacturerComputer.valueOf(String.valueOf(manufacturer)));
+            return this;
+        }
+
+        public Computer build(){
+            return buildedComputer;
+        }
     }
 }
