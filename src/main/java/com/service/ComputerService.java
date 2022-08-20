@@ -1,5 +1,7 @@
 package com.service;
 
+import com.annotations.Autowired;
+import com.annotations.Singleton;
 import com.model.computer.Computer;
 import com.model.computer.ManufacturerComputer;
 import com.model.phone.Manufacturer;
@@ -14,14 +16,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-
+@Singleton
 public class ComputerService extends ProductService<Computer>{
-    private final ComputerRepository repository;
     private static ComputerService instance;
 
-    protected ComputerService(final ComputerRepository repository){
+    @Autowired
+    protected ComputerService(CrudRepository<Computer> repository){
         super(repository);
-        this.repository = repository;
     }
 
     public static ComputerService getInstance(){
