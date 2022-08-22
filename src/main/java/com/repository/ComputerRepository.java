@@ -1,11 +1,14 @@
 package com.repository;
 
+import com.annotations.Autowired;
+import com.annotations.Singleton;
 import com.model.computer.Computer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Singleton
 public class ComputerRepository implements CrudRepository<Computer> {
     private final List<Computer> computers;
     private final Logger logger = LoggerFactory.getLogger(ComputerRepository.class);

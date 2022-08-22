@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CrudRepository<T extends Product> {
-    Computer save(T product);
+    Product save(T product);
 
     void saveAll(List<T> product);
 

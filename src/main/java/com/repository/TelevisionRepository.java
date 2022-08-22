@@ -1,5 +1,6 @@
 package com.repository;
 
+import com.annotations.Singleton;
 import com.model.computer.Computer;
 import com.model.television.Television;
 import org.slf4j.Logger;
@@ -7,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
+@Singleton
 public class TelevisionRepository implements CrudRepository<Television> {
     private final List<Television> televisions;
     private final Logger logger = LoggerFactory.getLogger(TelevisionRepository.class);

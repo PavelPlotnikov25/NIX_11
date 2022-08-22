@@ -1,9 +1,11 @@
 package com.service;
 
-import com.model.Product;
+import com.annotations.Autowired;
+import com.annotations.Singleton;
 import com.model.phone.Manufacturer;
 import com.model.phone.OperationSystem;
 import com.model.phone.Phone;
+import com.repository.DB.DBPhoneRepository;
 import com.repository.CrudRepository;
 import com.repository.PhoneRepository;
 
@@ -11,26 +13,21 @@ import com.repository.PhoneRepository;
 import java.io.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
 
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Singleton
 public class PhoneService extends ProductService<Phone> {
 
-
+    @Autowired
     public PhoneService(CrudRepository<Phone> repository) {
         super(repository);
     }
 
     private static PhoneService instance;
 
-    private PhoneService(final PhoneRepository repository) {
-        super(repository);
-        this.repository = repository;
-    }
 
     public static PhoneService getInstance() {
         if (instance == null) {

@@ -1,17 +1,20 @@
 package com.repository;
 
+import com.annotations.Autowired;
+import com.annotations.Singleton;
 import com.model.computer.Computer;
 import com.model.phone.Phone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
-
+@Singleton
 public class PhoneRepository implements CrudRepository<Phone> {
     private final List<Phone> phones;
     private final Logger logger = LoggerFactory.getLogger(PhoneRepository.class);
 
     private static PhoneRepository instance;
+
 
     public PhoneRepository() {
         phones = new LinkedList<>();
@@ -54,16 +57,7 @@ public class PhoneRepository implements CrudRepository<Phone> {
 
     @Override
     public boolean delete(String id) {
-        final Iterator<Phone> iterator = phones.iterator();
-        while (iterator.hasNext()) {
-            final Phone phone = iterator.next();
-            if (phone.getId().equals(id)) {
-                iterator.remove();
-                logger.info("DELETE " + phone);
-                return true;
-            }
-        }
-        return false;
+        return phones.removeIf(phone -> phone.getId().equals(id));
     }
 
     @Override
