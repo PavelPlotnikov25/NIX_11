@@ -34,7 +34,6 @@ public class Delete implements Command {
 
         }
     }
-
     private void deleteProduct(ProductService<? extends Product> productService) {
         boolean flag = false;
         while (!flag) {

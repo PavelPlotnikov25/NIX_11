@@ -1,6 +1,7 @@
 package com.model.computer;
 
 import com.model.Product;
+import com.model.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,13 +13,23 @@ import java.util.Objects;
 public class Computer extends Product{
     private String model;
     private ManufacturerComputer manufacturer;
+    private String invoiceId;
 
 
+
+    public Computer(String title, int count, double price, String model, ManufacturerComputer manufacturer, String invoiceId) {
+        super(title, count, price);
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.invoiceId = invoiceId;
+        this.type = ProductType.COMPUTER;
+    }
 
     public Computer(String title, int count, double price, String model, ManufacturerComputer manufacturer) {
         super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
+        this.type = ProductType.COMPUTER;
     }
     
 
@@ -55,7 +66,8 @@ public class Computer extends Product{
                 this.count,
                 this.price,
                 this.model,
-                this.manufacturer);
+                this.manufacturer,
+                this.invoiceId);
     }
 
     public static class Builder{
@@ -66,7 +78,7 @@ public class Computer extends Product{
             if (price < 0) {
                 System.out.println("Price cannot be lower than 0");
             } else {
-                buildedComputer = new Computer("Empty", 0,price, "empty model", null);
+                buildedComputer = new Computer("Empty", 0,price, "empty model", null, null);
             }
         }
 

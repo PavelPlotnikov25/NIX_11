@@ -22,7 +22,7 @@ class OptionalExTest {
 
     @Test
     void deleteIfPresentPositive() {
-    Computer computer = new Computer("_",1,1,"--", ManufacturerComputer.APPLE);
+    Computer computer = new Computer("_",1,1,"--", ManufacturerComputer.APPLE,null);
     Mockito.when(repository.findById(computer.getId())).thenReturn(Optional.of(computer));
     target.deleteIfPresent(computer.getId());
     Mockito.verify(repository).findById(computer.getId());
@@ -30,7 +30,7 @@ class OptionalExTest {
     }
     @Test
     void deleteIfPresentNegative() {
-        Computer computer = new Computer("Title",10,10,"--", ManufacturerComputer.ACER);
+        Computer computer = new Computer("Title",10,10,"--", ManufacturerComputer.ACER,null);
         Mockito.when(repository.findById(computer.getId())).thenReturn(Optional.empty());
         target.deleteIfPresent("123");
         Assertions.assertNotEquals("123", repository.findById(computer.getId()));
@@ -40,7 +40,7 @@ class OptionalExTest {
 
     @Test
     void findOrCreateDefaultPositive() {
-        Computer computer = new Computer("Title",10,10,"--", ManufacturerComputer.ACER);
+        Computer computer = new Computer("Title",10,10,"--", ManufacturerComputer.ACER,null);
         Mockito.when(repository.findById(computer.getId())).thenReturn(Optional.of(computer));
         target.findOrCreateDefault(computer.getId());
         Mockito.verify(repository).findById(computer.getId());

@@ -1,5 +1,6 @@
 package com.service;
 
+import com.annotations.Singleton;
 import com.model.Product;
 import com.model.ProductType;
 import com.model.computer.Computer;
@@ -25,7 +26,7 @@ public abstract class ProductService<T extends Product> {
         this.repository = repository;
     }
 
-    private Predicate<T> verifyThatProductHasPrice = product -> product.getPrice() > 0;
+    private final Predicate<T> verifyThatProductHasPrice = product -> product.getPrice() > 0;
 
     public void createAndSaveProduct(int count) {
         if (count < 1) {
@@ -77,32 +78,36 @@ public abstract class ProductService<T extends Product> {
                 .filter(product -> product.getPrice() >= expetctedPrice)
                 .forEach(product -> System.out.println(product + " price: " + product.getPrice()));
     }
+    public List<Product> getProductsWithoutInvoice (int count, String productType){
+        List<Product> productsForInvoice = new ArrayList<>();
+        for (int i = 0; i < count; i++){
+            productsForInvoice.add(repository.getAll().get(RANDOM.nextInt(0, repository.getAll().size())));
+        }
+        return productsForInvoice;
+    }
 
     public int sumOfProductsByReduce() {
-        int sum = repository.getAll()
+        return repository.getAll()
                 .stream()
                 .filter(product -> verifyThatProductHasPrice.test(product))
-                .map(Product -> Product.getCount())
-                .reduce(0, (o1, o2) -> o1 + o2);
-        return sum;
+                .map(Product::getCount)
+                .reduce(0, Integer::sum);
     }
 
     public Map<String, ProductType> sortProductsToMap() {
         final ProductType[] values = ProductType.values();
-        Map<String, ProductType> collect = repository.getAll()
+        return repository.getAll()
                 .stream()
                 .distinct()
                 .sorted(Comparator.comparing(product -> product.getTitle()))
-                .collect(Collectors.toMap(product -> product.getId(), productType -> productType.getType(), (o1, o2) -> o2));
-        return collect;
+                .collect(Collectors.toMap(Product::getId, Product::getType, (o1, o2) -> o2));
     }
 
     public DoubleSummaryStatistics priceStatistics() {
-        DoubleSummaryStatistics statistics = repository.getAll()
+        return repository.getAll()
                 .stream()
                 .mapToDouble(product -> product.getPrice())
                 .summaryStatistics();
-        return statistics;
     }
 
     public Product createProductFromMap(Map<String, Object> map) {
@@ -119,7 +124,8 @@ public abstract class ProductService<T extends Product> {
                             (Integer) map.getOrDefault("count", 0),
                             (Double) map.getOrDefault("Price", 0),
                             map.getOrDefault("Model", "Default Model").toString(),
-                            ManufacturerComputer.valueOf(map.getOrDefault("Manufacturer", ManufacturerComputer.APPLE).toString()));
+                            ManufacturerComputer.valueOf(map.getOrDefault("Manufacturer", ManufacturerComputer.APPLE).toString()),
+                            null);
                     case TELEVISION -> new Television(map.getOrDefault("Title", "Default title").toString(),
                             (Integer) map.getOrDefault("count", 0),
                             (Double) map.getOrDefault("Price", 0),

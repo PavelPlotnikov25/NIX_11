@@ -2,11 +2,15 @@ package com.service;
 
 import com.annotations.Autowired;
 import com.annotations.Singleton;
+import com.model.Product;
+import com.model.computer.Computer;
 import com.model.phone.Manufacturer;
 import com.model.phone.OperationSystem;
 import com.model.phone.Phone;
+import com.repository.DB.DBComputerRepository;
 import com.repository.DB.DBPhoneRepository;
 import com.repository.CrudRepository;
+import com.repository.DB.InvoiceRepository;
 import com.repository.PhoneRepository;
 
 
@@ -14,9 +18,12 @@ import java.io.*;
 
 import java.time.Instant;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Singleton
 public class PhoneService extends ProductService<Phone> {
@@ -28,10 +35,9 @@ public class PhoneService extends ProductService<Phone> {
 
     private static PhoneService instance;
 
-
     public static PhoneService getInstance() {
         if (instance == null) {
-            instance = new PhoneService(PhoneRepository.getInstance());
+            instance = new PhoneService(DBPhoneRepository.getInstance());
         }
         return instance;
     }
@@ -98,5 +104,22 @@ public class PhoneService extends ProductService<Phone> {
                     operationSystem);
             repository.save(phone);
         }
+    }
+
+    public List<Product> getFreeProduct(int count) {
+        final List<Product> result = new ArrayList<>();
+        final List<Phone> all = repository.getAll();
+        for (Phone phone:all) {
+            if (phone.getInvoiceId() == null && result.size() < count){
+                result.add(phone);
+            }
+        }
+        return result;
+    }
+
+    public List<Product> getAllByInvoiceId(String invoiceID){
+        return repository.getAll().stream()
+                .filter(phone -> phone.getInvoiceId().equals(invoiceID))
+                .collect(Collectors.toList());
     }
 }
