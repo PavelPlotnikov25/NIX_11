@@ -23,7 +23,7 @@ public class OptionalEx {
         Computer computer;
         repository.findById(id).
       orElse(repository.save
-              (new Computer(" ", 0, 0, "Default Model", ManufacturerComputer.APPLE)));
+              (new Computer(" ", 0, 0, "Default Model", ManufacturerComputer.APPLE,null)));
     }
     public Computer findByIdOrCreateNewComputer(String id){
         return repository.findById(id).orElseGet(this::createAndSaveNewComputer);
@@ -33,7 +33,8 @@ public class OptionalEx {
                 random.nextInt(500),
                 random.nextDouble(500),
                 "MODEL",
-                 ManufacturerComputer.APPLE);
+                 ManufacturerComputer.APPLE,
+                null);
         repository.save(computer);
         return computer;
     }

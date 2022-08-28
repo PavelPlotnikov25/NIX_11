@@ -2,19 +2,15 @@ package com.service;
 
 import com.annotations.Autowired;
 import com.annotations.Singleton;
+import com.model.Product;
 import com.model.computer.Computer;
 import com.model.computer.ManufacturerComputer;
-import com.model.phone.Manufacturer;
-import com.repository.ComputerRepository;
 import com.repository.CrudRepository;
-import com.repository.PhoneRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.repository.DB.DBComputerRepository;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.stream.Collectors;
 
 @Singleton
 public class ComputerService extends ProductService<Computer>{
@@ -27,7 +23,7 @@ public class ComputerService extends ProductService<Computer>{
 
     public static ComputerService getInstance(){
         if (instance == null){
-            instance = new ComputerService(ComputerRepository.getInstance());
+            instance = new ComputerService(DBComputerRepository.getInstance());
         }
         return instance;
     }
@@ -38,11 +34,28 @@ public class ComputerService extends ProductService<Computer>{
                 RANDOM.nextInt(500),
                 RANDOM.nextDouble(1000),
                 "MODEL - " + RANDOM.nextInt(),
-                getRandomManufacturer());
+                getRandomManufacturer(),null);
     }
     private ManufacturerComputer getRandomManufacturer() {
         final ManufacturerComputer[] values = ManufacturerComputer.values();
         final int index = RANDOM.nextInt(values.length);
         return values[index];
+    }
+
+    public List<Product> getFreeProduct(int count) {
+        final List<Product> result = new ArrayList<>();
+        final List<Computer> all = repository.getAll();
+        for (Computer computer:all) {
+            if (computer.getInvoiceId() == null && result.size() < count){
+                result.add(computer);
+            }
+        }
+        return result;
+    }
+
+    public List<Product> getAllByInvoiceId(String invoiceID){
+        return repository.getAll().stream()
+                .filter(television -> television.getInvoiceId().equals(invoiceID))
+                .collect(Collectors.toList());
     }
 }

@@ -1,15 +1,17 @@
 package com.model.television;
 
 import com.model.Product;
+import com.model.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class Television extends Product {
-    private final String model;
-    private final ManufacturerTelevision manufacturer;
-    private final int diagonal;
+    private String model;
+    private ManufacturerTelevision manufacturer;
+    private int diagonal;
+    private String invoiceId;
 
 
 
@@ -18,6 +20,15 @@ public class Television extends Product {
         this.model = model;
         this.manufacturer = manufacturer;
         this.diagonal = diagonal;
+        this.type = ProductType.TELEVISION;
+    }
+    public Television(String title, int count, double price, String model, ManufacturerTelevision manufacturer, int diagonal, String invoiceId) {
+        super(title, count, price);
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.diagonal = diagonal;
+        this.invoiceId=invoiceId;
+        this.type = ProductType.TELEVISION;
     }
 
     @Override
@@ -42,5 +53,6 @@ public class Television extends Product {
                 this.manufacturer,
                 this.diagonal);
     }
+
 
 }

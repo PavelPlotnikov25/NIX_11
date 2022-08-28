@@ -8,10 +8,11 @@ import java.util.UUID;
 @Getter
 @Setter
 public abstract class Product{
-    protected final String id;
+    protected String id;
     protected String title;
     protected int count;
     protected double price;
+    protected ProductType type;
 
     public ProductType getType() {
         return type;
@@ -21,7 +22,15 @@ public abstract class Product{
         this.type = type;
     }
 
-    protected ProductType type;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+
 
     protected Product(String title, int count, double price) {
         this.id = UUID.randomUUID().toString();

@@ -12,13 +12,14 @@ import java.util.List;
 @Getter
 @Setter
 public class Phone extends Product {
-    private final String model;
-    private final Manufacturer manufacturer;
+    private String model;
+    private Manufacturer manufacturer;
     private List<String> details = new ArrayList<>();
     private Date date;
     private String currency;
     private OperationSystem os;
     private ProductType type;
+    private String invoiceId;
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer, Date date, String currency, OperationSystem os) {
         super(title, count, price);
@@ -27,6 +28,7 @@ public class Phone extends Product {
         this.date = date;
         this.currency = currency;
         this.os = os;
+        this.type = ProductType.PHONE;
     }
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer, List<String> details) {
@@ -34,12 +36,21 @@ public class Phone extends Product {
         this.model = model;
         this.manufacturer = manufacturer;
         this.details = details;
+        this.type = ProductType.PHONE;
     }
 
     public Phone(String title, int count, double price,  String model, Manufacturer manufacturer) {
         super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
+        this.type = ProductType.PHONE;
+    }
+    public Phone(String title, int count, double price,  String model, Manufacturer manufacturer, String invoiceId) {
+        super(title, count, price);
+        this.model = model;
+        this.manufacturer = manufacturer;
+        this.invoiceId = invoiceId;
+        this.type = ProductType.PHONE;
     }
 
     public List<String> getDetails() {
@@ -73,6 +84,7 @@ public class Phone extends Product {
         this.details = details;
     }
 
+
     @Override
     public String toString() {
         return "Phone{" +
@@ -82,9 +94,6 @@ public class Phone extends Product {
                 ", price=" + price +
                 ", model='" + model + '\'' +
                 ", manufacturer=" + manufacturer +
-                ", date=" + date +
-                ", currency='" + currency + '\'' +
-                ", os=" + os +
                 '}';
     }
 

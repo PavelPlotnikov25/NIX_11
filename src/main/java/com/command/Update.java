@@ -4,12 +4,17 @@ package com.command;
 import com.model.Product;
 import com.model.ProductType;
 import com.model.computer.Computer;
+import com.model.computer.ManufacturerComputer;
+import com.model.phone.Manufacturer;
 import com.model.phone.Phone;
+import com.model.television.ManufacturerTelevision;
 import com.model.television.Television;
 import com.service.ComputerService;
 import com.service.PhoneService;
 import com.service.ProductService;
 import com.service.TelevisionService;
+import org.apache.commons.lang3.EnumUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,40 +32,94 @@ public class Update implements Command {
         final List<String> names = getNamesOfType(values);
         final int userInput = UserInputUtil.getUserInput(values.length, names);
         switch (values[userInput]) {
-            case PHONE -> findProductToUpdate(PHONE_PRODUCT_SERVICE);
-            case COMPUTER -> findProductToUpdate(COMPUTER_PRODUCT_SERVICE);
-            case TELEVISION -> findProductToUpdate(TELEVISION_PRODUCT_SERVICE);
+            case PHONE -> updatePhone(PHONE_PRODUCT_SERVICE);
+            case COMPUTER -> updateComputer(COMPUTER_PRODUCT_SERVICE);
+            case TELEVISION -> updateTelevision(TELEVISION_PRODUCT_SERVICE);
 
         }
     }
 
-    private void findProductToUpdate(ProductService<? extends Product> productService){
-        boolean flag=false;
-        while (!flag) {
-            if (productService.getAll().isEmpty()) {
-                System.out.println("There are no products ");
-            } else {
-                System.out.println("Please, enter ID, which product you want to update");
-                final String userInputID = SCANNER.next();
-                final Optional<? extends Product> foundedProduct = productService.findById(userInputID);
-                if (foundedProduct.isEmpty()) {
-                    System.out.println("There are no products with id = " + userInputID);
-                } else if (userInputID.equals(foundedProduct.get().getId())) {
-                    System.out.println("enter a new title ");
-                    final String newTitle = SCANNER.next();
-                    System.out.println("enter a new price ");
-                    final double newPrice = SCANNER.nextDouble();
-                    System.out.println("enter a new price ");
-                    final int newCount = SCANNER.nextInt();
-                    System.out.println("PRODUCT HAS BEEN UPDATED !");
-                    foundedProduct.get().setCount(newCount);
-                    foundedProduct.get().setPrice(newPrice);
-                    foundedProduct.get().setTitle(newTitle);
-                    productService.update(foundedProduct.get());
-                    System.out.println(foundedProduct);
-                    return;
-                }
-            }
+    private void updateTelevision(ProductService<Television> televisionProductService) {
+        System.out.println("Please, enter ID, which television you want to update");
+        final String userInputID = SCANNER.next();
+        final Optional<Television> foundedTelevision = televisionProductService.findById(userInputID);
+        if (foundedTelevision.isEmpty()) {
+            System.out.println("There are no products with id = " + userInputID);
+        } else if (userInputID.equals(foundedTelevision.get().getId())) {
+            System.out.println("enter a new title ");
+            final String newTitle = SCANNER.next();
+            System.out.println("enter a new price ");
+            final double newPrice = SCANNER.nextDouble();
+            System.out.println("enter a new count ");
+            final int newCount = SCANNER.nextInt();
+            System.out.println("enter a new Manufacturer");
+            final String newManufacturer = SCANNER.next();
+            System.out.println("enter a new Model");
+            final String newModel = SCANNER.next();
+            System.out.println("enter a new diagonal");
+            final int newDiagonal = SCANNER.nextInt();
+            System.out.println("PRODUCT HAS BEEN UPDATED !");
+            foundedTelevision.get().setCount(newCount);
+            foundedTelevision.get().setPrice(newPrice);
+            foundedTelevision.get().setTitle(newTitle);
+            foundedTelevision.get().setModel(newModel);
+            foundedTelevision.get().setManufacturer(EnumUtils.getEnumIgnoreCase(ManufacturerTelevision.class, newManufacturer));
+            foundedTelevision.get().setDiagonal(newDiagonal);
+            televisionProductService.update(foundedTelevision.get());
+        }
+    }
+
+    private void updateComputer(ProductService<Computer> computerProductService) {
+        System.out.println("Please, enter ID, which computer you want to update");
+        final String userInputID = SCANNER.next();
+        final Optional<Computer> foundedComputer = computerProductService.findById(userInputID);
+        if (foundedComputer.isEmpty()) {
+            System.out.println("There are no products with id = " + userInputID);
+        } else if (userInputID.equals(foundedComputer.get().getId())) {
+            System.out.println("enter a new title ");
+            final String newTitle = SCANNER.next();
+            System.out.println("enter a new price ");
+            final double newPrice = SCANNER.nextDouble();
+            System.out.println("enter a new count ");
+            final int newCount = SCANNER.nextInt();
+            System.out.println("enter a new Manufacturer");
+            String newManufacturer = SCANNER.next();
+            System.out.println("enter a new Model");
+            String newModel = SCANNER.next();
+            System.out.println("PRODUCT HAS BEEN UPDATED !");
+            foundedComputer.get().setCount(newCount);
+            foundedComputer.get().setPrice(newPrice);
+            foundedComputer.get().setTitle(newTitle);
+            foundedComputer.get().setModel(newModel);
+            foundedComputer.get().setManufacturer(EnumUtils.getEnumIgnoreCase(ManufacturerComputer.class, newManufacturer));
+            computerProductService.update(foundedComputer.get());
+        }
+    }
+
+    private void updatePhone(ProductService<Phone> phoneProductService) {
+        System.out.println("Please, enter ID, which phone you want to update");
+        final String userInputID = SCANNER.next();
+        final Optional<Phone> foundedPhone = phoneProductService.findById(userInputID);
+        if (foundedPhone.isEmpty()) {
+            System.out.println("There are no products with id = " + userInputID);
+        } else if (userInputID.equals(foundedPhone.get().getId())) {
+            System.out.println("enter a new title ");
+            final String newTitle = SCANNER.next();
+            System.out.println("enter a new price ");
+            final double newPrice = SCANNER.nextDouble();
+            System.out.println("enter a new count ");
+            final int newCount = SCANNER.nextInt();
+            System.out.println("enter a new Manufacturer");
+            String newManufacturer = SCANNER.next();
+            System.out.println("enter a new Model");
+            String newModel = SCANNER.next();
+            System.out.println("PRODUCT HAS BEEN UPDATED !");
+            foundedPhone.get().setCount(newCount);
+            foundedPhone.get().setPrice(newPrice);
+            foundedPhone.get().setTitle(newTitle);
+            foundedPhone.get().setModel(newModel);
+            foundedPhone.get().setManufacturer(EnumUtils.getEnumIgnoreCase(Manufacturer.class, newManufacturer));
+            phoneProductService.update(foundedPhone.get());
         }
     }
 
