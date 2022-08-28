@@ -6,6 +6,7 @@ import com.model.Invoice;
 import com.model.Product;
 import com.model.ProductType;
 import com.repository.DB.InvoiceRepository;
+import com.repository.hiberante.HibernateInvoiceRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -14,17 +15,17 @@ import java.util.*;
 public class InvoiceService {
 
     private static InvoiceService instance;
-    protected InvoiceRepository repository;
+    protected HibernateInvoiceRepository repository;
     private final Random random = new Random();
     @Autowired
-    public InvoiceService(InvoiceRepository invoiceRepository) {
+    public InvoiceService(HibernateInvoiceRepository invoiceRepository) {
         this.repository = invoiceRepository;
     }
 
 
     public static InvoiceService getInstance() {
         if (instance == null) {
-            instance = new InvoiceService(InvoiceRepository.getInstance());
+            instance = new InvoiceService(HibernateInvoiceRepository.getInstance());
         }
         return instance;
     }
@@ -42,7 +43,7 @@ public class InvoiceService {
         return invoice;
     }
 
-    public int countOfInvoices(){
+    public Long countOfInvoices(){
         return repository.countOfInvoices();
     }
 

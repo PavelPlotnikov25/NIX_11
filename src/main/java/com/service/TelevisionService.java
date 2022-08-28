@@ -12,6 +12,7 @@ import com.repository.DB.DBComputerRepository;
 import com.repository.DB.DBTelevisionRepository;
 import com.repository.PhoneRepository;
 import com.repository.TelevisionRepository;
+import com.repository.hiberante.HibernateTelevisionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class TelevisionService extends ProductService<Television> {
 
     public static TelevisionService getInstance(){
         if (instance == null){
-            instance = new TelevisionService(DBTelevisionRepository.getInstance());
+            instance = new TelevisionService(HibernateTelevisionRepository.getInstance());
         }
         return instance;
     }
@@ -54,7 +55,7 @@ public class TelevisionService extends ProductService<Television> {
         final List<Product> result = new ArrayList<>();
         final List<Television> all = repository.getAll();
         for (Television television:all) {
-            if (television.getInvoiceId() == null && result.size() < count){
+            if (television.getInvoiceID() == null && result.size() < count){
                 result.add(television);
             }
         }
@@ -63,7 +64,7 @@ public class TelevisionService extends ProductService<Television> {
 
     public List<Product> getAllByInvoiceId(String invoiceID){
         return repository.getAll().stream()
-                .filter(computer -> computer.getInvoiceId().equals(invoiceID))
+                .filter(computer -> computer.getInvoiceID().equals(invoiceID))
                 .collect(Collectors.toList());
     }
 }

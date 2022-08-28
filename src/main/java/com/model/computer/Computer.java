@@ -5,14 +5,21 @@ import com.model.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.Objects;
 
 
 @Getter
 @Setter
+@Entity
 public class Computer extends Product{
+    @Column
     private String model;
+    @Column
     private ManufacturerComputer manufacturer;
+    @Transient
     private String invoiceId;
 
 
@@ -31,7 +38,10 @@ public class Computer extends Product{
         this.manufacturer = manufacturer;
         this.type = ProductType.COMPUTER;
     }
-    
+
+    public Computer() {
+        super();
+    }
 
 
     @Override

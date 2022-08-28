@@ -5,6 +5,9 @@ import com.annotations.Singleton;
 import com.repository.ComputerRepository;
 import com.repository.PhoneRepository;
 import com.repository.TelevisionRepository;
+import com.repository.hiberante.HibernateComputerRepository;
+import com.repository.hiberante.HibernatePhoneRepository;
+import com.repository.hiberante.HibernateTelevisionRepository;
 import com.service.ComputerService;
 import com.service.PhoneService;
 import com.service.TelevisionService;
@@ -35,12 +38,12 @@ public class ApplicationProcessor {
                     .forEach(constructor -> {
                         if (constructor.isAnnotationPresent(Autowired.class) && constructor.getParameterCount() == 1) {
                        Object object = null;
-                       if (aClass.getSimpleName().equals(PhoneRepository.class.getSimpleName())){
-                           object = cache.get(PhoneRepository.class);
-                       }else if (aClass.getSimpleName().equals(ComputerRepository.class.getSimpleName())){
-                           object = cache.get(ComputerRepository.class);
-                            }else if (aClass.getSimpleName().equals(TelevisionRepository.class.getSimpleName())){
-                                object = cache.get(TelevisionRepository.class);
+                       if (aClass.getSimpleName().equals(HibernatePhoneRepository.class.getSimpleName())){
+                           object = cache.get(HibernatePhoneRepository.class);
+                       }else if (aClass.getSimpleName().equals(HibernateComputerRepository.class.getSimpleName())){
+                           object = cache.get(HibernateComputerRepository.class);
+                            }else if (aClass.getSimpleName().equals(HibernateTelevisionRepository.class.getSimpleName())){
+                                object = cache.get(HibernateTelevisionRepository.class);
                             }
                             try {
                                 constructor.setAccessible(true);

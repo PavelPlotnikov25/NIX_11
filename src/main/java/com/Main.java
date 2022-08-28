@@ -1,45 +1,42 @@
 package com;
 
-import com.model.Invoice;
+
 import com.model.Product;
 import com.model.ProductType;
-import com.program.Program;
-import com.repository.DB.DBComputerRepository;
-import com.repository.DB.DBPhoneRepository;
-import com.repository.DB.DBTelevisionRepository;
-import com.repository.DB.InvoiceRepository;
-import com.service.ComputerService;
-import com.service.InvoiceService;
-import com.service.ProductService;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import com.model.computer.Computer;
+import com.model.phone.Phone;
+import com.model.television.Television;
+import com.service.*;
 import java.util.List;
+import java.util.Random;
+
 
 public class Main {
 
 
     public static void main(String[] args) {
+        Random random = new Random();
 //        Program program = new Program();
-//        program.run();
-
+//   program.run();
+        ProductService<Phone> phoneProductService = PhoneService.getInstance();
+        ProductService<Computer> computerProductService = ComputerService.getInstance();
+        ProductService<Television> televisionProductService = TelevisionService.getInstance();
         InvoiceService invoiceService = InvoiceService.getInstance();
-        System.out.println("JDBC TESTING");
-        List<Product> productsForInvoice1 = invoiceService.getProducts(1, ProductType.COMPUTER);
-        productsForInvoice1.addAll(invoiceService.getProducts(1,ProductType.PHONE));
-        invoiceService.createAndSave(productsForInvoice1);
-        List<Product> productsForInvoice2 = invoiceService.getProducts(1, ProductType.COMPUTER);
-       productsForInvoice2.addAll(invoiceService.getProducts(2, ProductType.TELEVISION));
-        productsForInvoice2.addAll(invoiceService.getProducts(1, ProductType.PHONE));
+
+        phoneProductService.createAndSaveProduct(30);
+        computerProductService.createAndSaveProduct(30);
+        televisionProductService.createAndSaveProduct(30);
+
+
+        for (int i = 0; i < 10; i++){
+            List<Product> productsForInvoice = invoiceService.getProducts(random.nextInt(0,5), ProductType.COMPUTER);
+            productsForInvoice.addAll(invoiceService.getProducts(random.nextInt(0,5),ProductType.PHONE));
+            productsForInvoice.addAll(invoiceService.getProducts(random.nextInt(0,5),ProductType.TELEVISION));
+            invoiceService.createAndSave(productsForInvoice);
+        }
+
         System.out.println("Count of invoices  - " + invoiceService.countOfInvoices());
         System.out.println("Group inivoices by sum - " + invoiceService.groupInvoices());
-        System.out.println("Invoices with sum higher than 1000 - " + invoiceService.findInvoicesWithSumHigher(1000));
-        List<Product> productsForInvoice3 = invoiceService.getProducts(1, ProductType.COMPUTER);
-        productsForInvoice1.addAll(invoiceService.getProducts(2,ProductType.PHONE));
-        Invoice invoice = invoiceService.createAndSave(productsForInvoice3);
-        invoiceService.UpdateInvoiceTime(invoice);
-        System.out.println(invoice);
-
+        System.out.println("Invoices with sum higher than 1000 - " + invoiceService.findInvoicesWithSumHigher(2500));
     }
 }
