@@ -5,13 +5,22 @@ import com.model.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
+
 @Getter
 @Setter
+@Entity
 public class Television extends Product {
+    @Column
     private String model;
+    @Column
     private ManufacturerTelevision manufacturer;
+    @Column
     private int diagonal;
-    private String invoiceId;
+    @Transient
+    private String invoiceID;
 
 
 
@@ -20,15 +29,18 @@ public class Television extends Product {
         this.model = model;
         this.manufacturer = manufacturer;
         this.diagonal = diagonal;
-        this.type = ProductType.TELEVISION;
     }
-    public Television(String title, int count, double price, String model, ManufacturerTelevision manufacturer, int diagonal, String invoiceId) {
+    public Television(String title, int count, double price, String model, ManufacturerTelevision manufacturer, int diagonal, String invoiceID) {
         super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
         this.diagonal = diagonal;
-        this.invoiceId=invoiceId;
+        this.invoiceID = invoiceID;
         this.type = ProductType.TELEVISION;
+    }
+
+    public Television() {
+
     }
 
     @Override
@@ -53,6 +65,5 @@ public class Television extends Product {
                 this.manufacturer,
                 this.diagonal);
     }
-
 
 }

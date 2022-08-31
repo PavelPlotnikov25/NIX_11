@@ -1,11 +1,8 @@
 package com.repository;
 
-import com.Main;
 import com.model.Invoice;
-import com.model.Product;
 
 import java.util.List;
-import java.util.Map;
 
 public interface InvoiceRepository {
 
@@ -13,7 +10,7 @@ public interface InvoiceRepository {
 
      List<Invoice> findInvoicesWithSumHigher(Double sum);
 
-    int countOfInvoices();
+    Long countOfInvoices();
 
     void update(Invoice invoice);
 

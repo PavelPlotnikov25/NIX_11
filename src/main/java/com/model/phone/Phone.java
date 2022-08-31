@@ -5,21 +5,33 @@ import com.model.ProductType;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
+@Entity
 public class Phone extends Product {
+    @Column
     private String model;
+    @Column
     private Manufacturer manufacturer;
-    private List<String> details = new ArrayList<>();
-    private Date date;
-    private String currency;
-    private OperationSystem os;
-    private ProductType type;
+    @Transient
     private String invoiceId;
+    @Transient
+    private List<String> details = new ArrayList<>();
+    @Transient
+    private Date date;
+    @Transient
+    private String currency;
+    @Transient
+    private OperationSystem os;
+    @Transient
+    private ProductType type;
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer, Date date, String currency, OperationSystem os) {
         super(title, count, price);
@@ -28,7 +40,6 @@ public class Phone extends Product {
         this.date = date;
         this.currency = currency;
         this.os = os;
-        this.type = ProductType.PHONE;
     }
 
     public Phone(String title, int count, double price, String model, Manufacturer manufacturer, List<String> details) {
@@ -36,14 +47,12 @@ public class Phone extends Product {
         this.model = model;
         this.manufacturer = manufacturer;
         this.details = details;
-        this.type = ProductType.PHONE;
     }
 
     public Phone(String title, int count, double price,  String model, Manufacturer manufacturer) {
         super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
-        this.type = ProductType.PHONE;
     }
     public Phone(String title, int count, double price,  String model, Manufacturer manufacturer, String invoiceId) {
         super(title, count, price);
@@ -51,6 +60,10 @@ public class Phone extends Product {
         this.manufacturer = manufacturer;
         this.invoiceId = invoiceId;
         this.type = ProductType.PHONE;
+    }
+
+    public Phone() {
+
     }
 
     public List<String> getDetails() {
@@ -84,7 +97,6 @@ public class Phone extends Product {
         this.details = details;
     }
 
-
     @Override
     public String toString() {
         return "Phone{" +
@@ -94,6 +106,9 @@ public class Phone extends Product {
                 ", price=" + price +
                 ", model='" + model + '\'' +
                 ", manufacturer=" + manufacturer +
+                ", date=" + date +
+                ", currency='" + currency + '\'' +
+                ", os=" + os +
                 '}';
     }
 

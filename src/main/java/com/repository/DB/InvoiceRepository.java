@@ -7,8 +7,6 @@ import com.model.ProductType;
 import lombok.SneakyThrows;
 
 import java.sql.*;
-import java.sql.Date;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -97,9 +95,9 @@ public class InvoiceRepository implements com.repository.InvoiceRepository {
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)){
             statement.setDouble(1, sum);
             ResultSet resultSet = statement.executeQuery();
-           while (resultSet.next()){
-               invoices.add(setFieldsToObject(resultSet));
-           }
+            while (resultSet.next()){
+                invoices.add(setFieldsToObject(resultSet));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -116,44 +114,43 @@ public class InvoiceRepository implements com.repository.InvoiceRepository {
     }
 
     @Override
-    public int countOfInvoices() {
+    public Long countOfInvoices() {
         String sql = "SELECT COUNT(*) FROM \"public\".\"Invoice\"";
         try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)){
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()){
-                return resultSet.getInt(1);
+                return resultSet.getLong(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
+        return 0L;
     }
 
     @Override
     public void update(Invoice invoice) {
-    String sql = "UPDATE \"public\".\"Invoice\" SET time = ? WHERE id = ?";
-    try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)){
-        statement.setTime(1, Time.valueOf(invoice.getTime().toLocalTime()));
-        statement.setString(2, invoice.getId());
-        statement.executeUpdate();
-    } catch (SQLException e) {
-        e.printStackTrace();
+        String sql = "UPDATE \"public\".\"Invoice\" SET time = ? WHERE id = ?";
+        try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)){
+            statement.setTime(1, Time.valueOf(invoice.getTime().toLocalTime()));
+            statement.setString(2, invoice.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public List<String> groupInvoicesBySum() {
         List<String> result = new ArrayList<>();
-    String sql = "SELECT sum, count(id) AS countOfInvioce  FROM \"public\".\"Invoice\" GROUP BY sum";
-    try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)){
-        ResultSet resultSet = statement.executeQuery();
-        while (resultSet.next()){
-            result.add("count = " + resultSet.getInt(2) + " Sum = " + resultSet.getDouble(1));
+        String sql = "SELECT sum, count(id) AS countOfInvioce  FROM \"public\".\"Invoice\" GROUP BY sum";
+        try (final PreparedStatement statement = CONNECTION.prepareStatement(sql)){
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()){
+                result.add("count = " + resultSet.getInt(2) + " Sum = " + resultSet.getDouble(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return result;
+        return result;
     }
 }
-

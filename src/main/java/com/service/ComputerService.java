@@ -7,6 +7,7 @@ import com.model.computer.Computer;
 import com.model.computer.ManufacturerComputer;
 import com.repository.CrudRepository;
 import com.repository.DB.DBComputerRepository;
+import com.repository.hiberante.HibernateComputerRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public class ComputerService extends ProductService<Computer>{
 
     public static ComputerService getInstance(){
         if (instance == null){
-            instance = new ComputerService(DBComputerRepository.getInstance());
+            instance = new ComputerService(HibernateComputerRepository.getInstance());
         }
         return instance;
     }

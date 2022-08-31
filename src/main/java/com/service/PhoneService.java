@@ -3,15 +3,11 @@ package com.service;
 import com.annotations.Autowired;
 import com.annotations.Singleton;
 import com.model.Product;
-import com.model.computer.Computer;
 import com.model.phone.Manufacturer;
 import com.model.phone.OperationSystem;
 import com.model.phone.Phone;
-import com.repository.DB.DBComputerRepository;
-import com.repository.DB.DBPhoneRepository;
 import com.repository.CrudRepository;
-import com.repository.DB.InvoiceRepository;
-import com.repository.PhoneRepository;
+import com.repository.hiberante.HibernatePhoneRepository;
 
 
 import java.io.*;
@@ -37,7 +33,7 @@ public class PhoneService extends ProductService<Phone> {
 
     public static PhoneService getInstance() {
         if (instance == null) {
-            instance = new PhoneService(DBPhoneRepository.getInstance());
+            instance = new PhoneService(HibernatePhoneRepository.getInstance());
         }
         return instance;
     }
