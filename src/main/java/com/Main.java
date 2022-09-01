@@ -1,13 +1,11 @@
 package com;
 
-
-import com.model.Product;
 import com.model.ProductType;
-import com.model.computer.Computer;
+
 import com.model.phone.Phone;
-import com.model.television.Television;
+
 import com.service.*;
-import java.util.List;
+
 import java.util.Random;
 
 
