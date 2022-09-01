@@ -1,5 +1,6 @@
 package com.model.phone;
 
+import com.google.gson.annotations.Expose;
 import com.model.Product;
 import com.model.ProductType;
 import lombok.Getter;
@@ -17,8 +18,10 @@ import java.util.List;
 @Entity
 public class Phone extends Product {
     @Column
+    @Expose
     private String model;
     @Column
+    @Expose
     private Manufacturer manufacturer;
     @Transient
     private String invoiceId;

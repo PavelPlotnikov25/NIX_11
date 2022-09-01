@@ -27,7 +27,7 @@ public class MongoComputerRepository implements CrudRepository<Computer> {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (localDateTime, type, jsonSerializationContext) -> new JsonPrimitive(localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)))
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> LocalDateTime.parse(json.getAsString() + " 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withLocale(Locale.ENGLISH)))
-            .create();
+            .excludeFieldsWithoutExposeAnnotation().create();
 
     public MongoComputerRepository() {
         collection = mongoDatabase.getCollection(Computer.class.getSimpleName());
@@ -48,9 +48,9 @@ public class MongoComputerRepository implements CrudRepository<Computer> {
     }
 
     @Override
-    public void saveAll(List<Computer> product) {
+    public void saveAll(List<Computer> products) {
         List<Document> documents = new ArrayList<>();
-        for (Computer products: product) {
+        for (Computer product: products) {
             documents.add(Document.parse(gson.toJson(product)));
         }
         collection.insertMany(documents);

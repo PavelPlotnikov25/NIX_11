@@ -1,9 +1,14 @@
 package com.repository.mongoDB;
 
+import com.annotations.Autowired;
 import com.annotations.Singleton;
 import com.config.MongoDBConfig;
 import com.google.gson.*;
 import com.model.Invoice;
+import com.model.Product;
+import com.model.computer.Computer;
+import com.model.phone.Phone;
+import com.model.television.Television;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Accumulators;
@@ -28,17 +33,19 @@ public class MongoInvoiceRepository implements InvoiceRepository {
     private final MongoCollection<Document> collectionPhones;
     private final MongoCollection<Document> collectionComputer;
     private final MongoCollection<Document> collectionTelevision;
+    private final Gson gson;
 
-    private static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (localDateTime, type, jsonSerializationContext) -> new JsonPrimitive(localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)))
-            .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> LocalDateTime.parse(json.getAsString() + " 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withLocale(Locale.ENGLISH)))
-            .create();
+
 
     public MongoInvoiceRepository() {
         collection = mongoDatabase.getCollection(Invoice.class.getSimpleName());
         collectionPhones = mongoDatabase.getCollection(Phone.class.getSimpleName());
         collectionComputer = mongoDatabase.getCollection(Computer.class.getSimpleName());
         collectionTelevision = mongoDatabase.getCollection(Television.class.getSimpleName());
+        gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (localDateTime, type, jsonSerializationContext) -> new JsonPrimitive(localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)))
+                .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> LocalDateTime.parse(json.getAsString() + " 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withLocale(Locale.ENGLISH)))
+                .excludeFieldsWithoutExposeAnnotation().create();
     }
 
     public static MongoInvoiceRepository getInstance(){
@@ -55,14 +62,15 @@ public class MongoInvoiceRepository implements InvoiceRepository {
     return invoice;
     }
 
-    @Override
+  @Override
     public List<Invoice> findInvoicesWithSumHigher(Double sum) {
         List<Invoice> invoices = new ArrayList<>();
         collection.find(Filters.gt("sum", sum))
-                .map(invoice -> gson.fromJson(invoice.toJson(), Invoice.class))
+                .map(document -> gson.fromJson(document.toJson(), Invoice.class))
                 .into(invoices);
         return invoices;
     }
+
 
     @Override
     public Long countOfInvoices() {
@@ -81,7 +89,7 @@ public class MongoInvoiceRepository implements InvoiceRepository {
         collection.aggregate(List.of(filter))
                 .map(document -> gson.fromJson(document.toJson(), JsonObject.class))
                 .forEach((Consumer<? super JsonObject>) jsonObject -> {
-                    result.add("count =  " + jsonObject.get("id").getAsInt() + " sum = " + jsonObject.get("sum").getAsDouble());
+                    result.add("count =  " + jsonObject.get("count").getAsInt() + " sum = " + jsonObject.get("_id").getAsDouble());
                 });
         return result;
     }

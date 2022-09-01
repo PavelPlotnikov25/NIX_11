@@ -28,7 +28,7 @@ public class MongoTelevisionRepository implements CrudRepository<Television> {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (localDateTime, type, jsonSerializationContext) -> new JsonPrimitive(localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)))
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> LocalDateTime.parse(json.getAsString() + " 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withLocale(Locale.ENGLISH)))
-            .create();
+            .excludeFieldsWithoutExposeAnnotation().create();
 
 
     public MongoTelevisionRepository() {
@@ -50,9 +50,9 @@ public class MongoTelevisionRepository implements CrudRepository<Television> {
     }
 
     @Override
-    public void saveAll(List<Television> product) {
+    public void saveAll(List<Television> products) {
         List<Document> documents = new ArrayList<>();
-        for (Television products: product) {
+        for (Television product: products) {
             documents.add(Document.parse(gson.toJson(product)));
         }
         collection.insertMany(documents);

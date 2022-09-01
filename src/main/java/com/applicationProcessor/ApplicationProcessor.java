@@ -8,6 +8,9 @@ import com.repository.TelevisionRepository;
 import com.repository.hiberante.HibernateComputerRepository;
 import com.repository.hiberante.HibernatePhoneRepository;
 import com.repository.hiberante.HibernateTelevisionRepository;
+import com.repository.mongoDB.MongoComputerRepository;
+import com.repository.mongoDB.MongoPhoneRepository;
+import com.repository.mongoDB.MongoTelevisionRepository;
 import com.service.ComputerService;
 import com.service.PhoneService;
 import com.service.TelevisionService;
@@ -38,12 +41,12 @@ public class ApplicationProcessor {
                     .forEach(constructor -> {
                         if (constructor.isAnnotationPresent(Autowired.class) && constructor.getParameterCount() == 1) {
                        Object object = null;
-                       if (aClass.getSimpleName().equals(HibernatePhoneRepository.class.getSimpleName())){
-                           object = cache.get(HibernatePhoneRepository.class);
-                       }else if (aClass.getSimpleName().equals(HibernateComputerRepository.class.getSimpleName())){
-                           object = cache.get(HibernateComputerRepository.class);
-                            }else if (aClass.getSimpleName().equals(HibernateTelevisionRepository.class.getSimpleName())){
-                                object = cache.get(HibernateTelevisionRepository.class);
+                       if (aClass.getSimpleName().equals(MongoPhoneRepository.class.getSimpleName())){
+                           object = cache.get(MongoPhoneRepository.class);
+                       }else if (aClass.getSimpleName().equals(MongoComputerRepository.class.getSimpleName())){
+                           object = cache.get(MongoComputerRepository.class);
+                            }else if (aClass.getSimpleName().equals(MongoTelevisionRepository.class.getSimpleName())){
+                                object = cache.get(MongoTelevisionRepository.class);
                             }
                             try {
                                 constructor.setAccessible(true);

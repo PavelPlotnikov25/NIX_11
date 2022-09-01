@@ -27,7 +27,7 @@ public class MongoPhoneRepository implements CrudRepository<Phone> {
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, (JsonSerializer<LocalDateTime>) (localDateTime, type, jsonSerializationContext) -> new JsonPrimitive(localDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)))
             .registerTypeAdapter(LocalDateTime.class, (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> LocalDateTime.parse(json.getAsString() + " 00:00", DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withLocale(Locale.ENGLISH)))
-            .create();
+            .excludeFieldsWithoutExposeAnnotation().create();
 
     public MongoPhoneRepository() {
         collection = mongoDatabase.getCollection(Phone.class.getSimpleName());
@@ -48,9 +48,9 @@ public class MongoPhoneRepository implements CrudRepository<Phone> {
     }
 
     @Override
-    public void saveAll(List<Phone> product) {
+    public void saveAll(List<Phone> products) {
         List<Document> documents = new ArrayList<>();
-        for (Phone products: product) {
+        for (Phone product: products) {
             documents.add(Document.parse(gson.toJson(product)));
         }
         collection.insertMany(documents);

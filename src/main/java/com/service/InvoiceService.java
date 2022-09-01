@@ -7,6 +7,7 @@ import com.model.Product;
 import com.model.ProductType;
 import com.repository.DB.InvoiceRepository;
 import com.repository.hiberante.HibernateInvoiceRepository;
+import com.repository.mongoDB.MongoInvoiceRepository;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -15,17 +16,17 @@ import java.util.*;
 public class InvoiceService {
 
     private static InvoiceService instance;
-    protected HibernateInvoiceRepository repository;
+    protected MongoInvoiceRepository repository;
     private final Random random = new Random();
     @Autowired
-    public InvoiceService(HibernateInvoiceRepository invoiceRepository) {
+    public InvoiceService(MongoInvoiceRepository invoiceRepository) {
         this.repository = invoiceRepository;
     }
 
 
     public static InvoiceService getInstance() {
         if (instance == null) {
-            instance = new InvoiceService(HibernateInvoiceRepository.getInstance());
+            instance = new InvoiceService(MongoInvoiceRepository.getInstance());
         }
         return instance;
     }
