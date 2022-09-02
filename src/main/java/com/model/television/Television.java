@@ -24,6 +24,7 @@ public class Television extends Product {
     @Expose
     private int diagonal;
     @Transient
+    @Expose
     private String invoiceID;
 
 
@@ -39,7 +40,7 @@ public class Television extends Product {
         this.model = model;
         this.manufacturer = manufacturer;
         this.diagonal = diagonal;
-        this.invoiceID = invoiceID;
+        this.invoiceID = super.invoiceID;
         this.type = ProductType.TELEVISION;
     }
 

@@ -1,6 +1,5 @@
 package com.repository.mongoDB;
 
-import com.annotations.Autowired;
 import com.annotations.Singleton;
 import com.config.MongoDBConfig;
 import com.google.gson.*;
@@ -15,6 +14,7 @@ import com.mongodb.client.model.Accumulators;
 import com.mongodb.client.model.Aggregates;
 import com.mongodb.client.model.Filters;
 import com.repository.InvoiceRepository;
+import org.apache.commons.lang3.EnumUtils;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -64,11 +64,36 @@ public class MongoInvoiceRepository implements InvoiceRepository {
 
   @Override
     public List<Invoice> findInvoicesWithSumHigher(Double sum) {
-        List<Invoice> invoices = new ArrayList<>();
-        collection.find(Filters.gt("sum", sum))
+        List<Invoice> invoices = collection.find(Filters.gt("sum", sum))
                 .map(document -> gson.fromJson(document.toJson(), Invoice.class))
-                .into(invoices);
+                .into(new ArrayList<>());
+        invoices.forEach(invoice -> invoice.setProducts(getProductsOfInvoice(invoice.getProductsIds())));
         return invoices;
+    }
+
+    private List<Product> getProductsOfInvoice(List<String> productsIds) {
+        List<Product> productsOfInvoice = new ArrayList<>();
+        for (String productID:productsIds) {
+            Phone phone = collectionPhones.find(Filters.eq("id",productID))
+                    .map(document -> gson.fromJson(document.toJson(), Phone.class))
+                    .first();
+            if (phone != null){
+                productsOfInvoice.add(phone);
+            }
+            Computer computer = collectionComputer.find(Filters.eq("id", productID))
+                    .map(document -> gson.fromJson(document.toJson(), Computer.class))
+                    .first();
+            if (computer != null){
+                productsOfInvoice.add(computer);
+            }
+            Television television = collectionTelevision.find(Filters.eq("id", productID))
+                    .map(document -> gson.fromJson(document.toJson(), Television.class))
+                    .first();
+            if (television != null){
+                productsOfInvoice.add(television);
+            }
+        }
+        return productsOfInvoice;
     }
 
 

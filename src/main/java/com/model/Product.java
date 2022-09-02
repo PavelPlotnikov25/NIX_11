@@ -34,6 +34,7 @@ public abstract class Product{
     @JoinColumn(name = "invoice_id")
     @Expose
     protected Invoice invoice;
+    protected String invoiceID;
     @Transient
     protected ProductType type;
 
@@ -55,6 +56,15 @@ public abstract class Product{
         this.count = count;
         this.price = price;
     }
+
+    public Product(String id, String title, int count, double price, String invoiceID) {
+        this.id = id;
+        this.title = title;
+        this.count = count;
+        this.price = price;
+        this.invoiceID = invoiceID;
+    }
+
     abstract public Product copy() throws CloneNotSupportedException;
 
 }

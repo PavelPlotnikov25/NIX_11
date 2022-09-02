@@ -31,7 +31,7 @@ public class Computer extends Product{
         super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
-        this.invoiceId = invoiceId;
+        this.invoiceId = super.invoiceID;
         this.type = ProductType.COMPUTER;
     }
 

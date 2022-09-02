@@ -11,8 +11,8 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 @Entity
 @NoArgsConstructor
 public class Invoice {
@@ -27,9 +27,12 @@ public class Invoice {
     @Column
     @Expose
     private double sum;
-    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @Transient
     @Expose
+    private List<String> productsIds;
+    @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> products;
+
 
 
     public Invoice(String id, double sum, List<Product> products, LocalDateTime time) {

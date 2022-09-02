@@ -40,6 +40,7 @@ public class InvoiceService {
         invoice.setSum(products.stream()
                 .mapToDouble(Product::getPrice).sum());
         invoice.setProducts(products);
+        invoice.setProductsIds(products.stream().map(product -> product.getId()).toList());
         repository.save(invoice);
         return invoice;
     }
