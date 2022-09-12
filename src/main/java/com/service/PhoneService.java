@@ -8,6 +8,7 @@ import com.model.phone.OperationSystem;
 import com.model.phone.Phone;
 import com.repository.CrudRepository;
 import com.repository.hiberante.HibernatePhoneRepository;
+import com.repository.mongoDB.MongoPhoneRepository;
 
 
 import java.io.*;
@@ -33,7 +34,7 @@ public class PhoneService extends ProductService<Phone> {
 
     public static PhoneService getInstance() {
         if (instance == null) {
-            instance = new PhoneService(HibernatePhoneRepository.getInstance());
+            instance = new PhoneService(MongoPhoneRepository.getInstance());
         }
         return instance;
     }

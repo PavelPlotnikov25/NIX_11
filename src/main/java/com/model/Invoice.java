@@ -1,6 +1,8 @@
 package com.model;
 
+import com.google.gson.annotations.Expose;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -9,20 +11,28 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
 @Setter
+@Getter
 @Entity
+@NoArgsConstructor
 public class Invoice {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Expose
     private String id;
     @Column
+    @Expose
     private LocalDateTime time;
     @Column
+    @Expose
     private double sum;
+    @Transient
+    @Expose
+    private List<String> productsIds;
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Product> products;
+
 
 
     public Invoice(String id, double sum, List<Product> products, LocalDateTime time) {
@@ -35,9 +45,6 @@ public class Invoice {
         this.id = id;
         this.sum = sum;
         this.time = time;
-    }
-
-    public Invoice() {
     }
 
     @Override

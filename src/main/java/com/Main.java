@@ -1,12 +1,15 @@
 package com;
 
 
+import com.model.Invoice;
 import com.model.Product;
 import com.model.ProductType;
 import com.model.computer.Computer;
 import com.model.phone.Phone;
 import com.model.television.Television;
 import com.service.*;
+
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 
@@ -38,5 +41,9 @@ public class Main {
         System.out.println("Count of invoices  - " + invoiceService.countOfInvoices());
         System.out.println("Group inivoices by sum - " + invoiceService.groupInvoices());
         System.out.println("Invoices with sum higher than 1000 - " + invoiceService.findInvoicesWithSumHigher(2500));
+        Invoice invoice = invoiceService.createAndSave(phoneProductService.createAndSaveProduct(5));
+        invoice.setTime(LocalDateTime.MAX);
+        invoiceService.UpdateInvoiceTime(invoice);
+        System.out.println(invoice);
     }
 }

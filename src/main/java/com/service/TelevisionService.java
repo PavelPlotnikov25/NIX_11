@@ -13,6 +13,7 @@ import com.repository.DB.DBTelevisionRepository;
 import com.repository.PhoneRepository;
 import com.repository.TelevisionRepository;
 import com.repository.hiberante.HibernateTelevisionRepository;
+import com.repository.mongoDB.MongoTelevisionRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class TelevisionService extends ProductService<Television> {
 
     public static TelevisionService getInstance(){
         if (instance == null){
-            instance = new TelevisionService(HibernateTelevisionRepository.getInstance());
+            instance = new TelevisionService(MongoTelevisionRepository.getInstance());
         }
         return instance;
     }

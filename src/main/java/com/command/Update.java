@@ -131,4 +131,3 @@ public class Update implements Command {
         return names;
     }
 }
-

@@ -1,5 +1,6 @@
 package com.model.computer;
 
+import com.google.gson.annotations.Expose;
 import com.model.Product;
 import com.model.ProductType;
 import lombok.Getter;
@@ -16,8 +17,10 @@ import java.util.Objects;
 @Entity
 public class Computer extends Product{
     @Column
+    @Expose
     private String model;
     @Column
+    @Expose
     private ManufacturerComputer manufacturer;
     @Transient
     private String invoiceId;
@@ -28,7 +31,7 @@ public class Computer extends Product{
         super(title, count, price);
         this.model = model;
         this.manufacturer = manufacturer;
-        this.invoiceId = invoiceId;
+        this.invoiceId = super.invoiceID;
         this.type = ProductType.COMPUTER;
     }
 
@@ -40,7 +43,7 @@ public class Computer extends Product{
     }
 
     public Computer() {
-        super();
+
     }
 
 

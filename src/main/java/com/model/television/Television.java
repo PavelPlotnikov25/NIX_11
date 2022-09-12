@@ -1,5 +1,6 @@
 package com.model.television;
 
+import com.google.gson.annotations.Expose;
 import com.model.Product;
 import com.model.ProductType;
 import lombok.Getter;
@@ -14,12 +15,16 @@ import javax.persistence.Transient;
 @Entity
 public class Television extends Product {
     @Column
+    @Expose
     private String model;
     @Column
+    @Expose
     private ManufacturerTelevision manufacturer;
     @Column
+    @Expose
     private int diagonal;
     @Transient
+    @Expose
     private String invoiceID;
 
 
@@ -35,7 +40,7 @@ public class Television extends Product {
         this.model = model;
         this.manufacturer = manufacturer;
         this.diagonal = diagonal;
-        this.invoiceID = invoiceID;
+        this.invoiceID = super.invoiceID;
         this.type = ProductType.TELEVISION;
     }
 

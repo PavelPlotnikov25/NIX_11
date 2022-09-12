@@ -1,6 +1,5 @@
 package com.service;
 
-import com.annotations.Singleton;
 import com.model.Product;
 import com.model.ProductType;
 import com.model.computer.Computer;
@@ -28,17 +27,19 @@ public abstract class ProductService<T extends Product> {
 
     private final Predicate<T> verifyThatProductHasPrice = product -> product.getPrice() > 0;
 
-    public void createAndSaveProduct(int count) {
+    public List<Product> createAndSaveProduct(int count) {
+        List<T> products = new LinkedList<>();
         if (count < 1) {
             throw new IllegalArgumentException("Count must be bigger than 0");
         }
-        List<T> products = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             final T phone = createProduct();
             products.add(phone);
             logger.info("SAVE " + phone);
         }
         repository.saveAll(products);
+        Object Product;
+        return (List<com.model.Product>) products;
     }
 
     protected abstract T createProduct();
